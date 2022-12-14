@@ -1,2 +1,3 @@
-# mappola-maps
-Map frontend components for the Mappola project
+# Mappola Maps
+
+Map frontend components for the Mappola project.
