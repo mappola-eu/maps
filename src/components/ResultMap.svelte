@@ -1,7 +1,9 @@
 <script>
   import { onMount, onDestroy } from 'svelte';
-  import { Map } from 'maplibre-gl';
+  import { Map, NavigationControl } from 'maplibre-gl';
   import { results } from '../store/results';
+  import { toGeoJSON } from './ResultMapUtils';
+  import { pointStyle } from './ResultMapStyle';
 
   import 'maplibre-gl/dist/maplibre-gl.css';
 
@@ -12,10 +14,6 @@
 
   // MapLibre map instance
   let map;
-
-  $: {
-    console.log('results', $results);
-  }
 
   onMount(() => {
     if (!apiKey)
@@ -30,6 +28,27 @@
       container,
       style: `https://api.maptiler.com/maps/streets/style.json?key=${apiKey}`,
       ...initialState
+    });
+
+    map.addControl(new NavigationControl(), 'top-right');
+
+    map.on('load', () => {
+
+      map.addSource('search', { 
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: toGeoJSON($results)
+        }
+      });
+
+      console.log(pointStyle({}));
+
+      map.addLayer({
+        ...pointStyle({}),
+        id: 'foobar',
+        source: 'search'
+      });
     });
   });
 

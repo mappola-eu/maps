@@ -1,11 +1,11 @@
-import Map from './components/Map.svelte';
+import ResultMap from './components/ResultMap.svelte';
 import { results } from './store/results';
 import { API_KEY } from './config';
 
 export class API {
 
   constructor(container) {
-    this.map = new Map({
+    this.map = new ResultMap({
       target: container,
       props: {
         apiKey: API_KEY
