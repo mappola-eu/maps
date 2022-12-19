@@ -8,7 +8,7 @@ const toFeature = result => ({
     type: 'Point',
     coordinates: result.lonlat
   }
-})
+});
 
 export const toGeoJSON = (results, precision = 5) => {
   const grouped = {};
@@ -27,5 +27,8 @@ export const toGeoJSON = (results, precision = 5) => {
     }
   });
 
-  return Object.values(grouped);
+  return {
+    type: 'FeatureCollection',
+    features: Object.values(grouped)
+  };
 }

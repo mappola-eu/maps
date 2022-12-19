@@ -8,7 +8,12 @@ export class API {
     this.map = new ResultMap({
       target: container,
       props: {
-        apiKey: API_KEY
+        apiKey: API_KEY,
+        style: 'streets',
+        initialState: { 
+          center: [17.0, 41.5], // lon/lat
+          zoom: 6 
+        }
       }
     });
   }

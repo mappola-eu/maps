@@ -10,11 +10,31 @@
 
   export let apiKey;
 
+  export let style;
+
+  export let initialState;
+
   // The map container DIV
   let container;
 
   // MapLibre map instance
   let map;
+
+  const onClick = evt => {
+    const bbox = [
+      [evt.point.x - CLICK_THRESHOLD, evt.point.y - CLICK_THRESHOLD],
+      [evt.point.x + CLICK_THRESHOLD, evt.point.y + CLICK_THRESHOLD]
+    ];
+
+    const selectedFeatures = map.queryRenderedFeatures(bbox, {
+      layers: ['results']
+    });
+
+    map.getSource('selection-source').setData({
+      type: 'FeatureCollection',
+      features: selectedFeatures
+    });
+  }
 
   $: {
     if (map)
@@ -22,37 +42,25 @@
   }
 
   onMount(() => {
-    if (!apiKey)
-      throw new Error("You need to configure env API_KEY first, see README");
-
-    const initialState = { 
-      center: [17.0, 41.5], // lon/lat
-      zoom: 6 
-    };
-  
     map = new Map({
       container,
-      style: `https://api.maptiler.com/maps/streets/style.json?key=${apiKey}`,
+      style: `https://api.maptiler.com/maps/${style}/style.json?key=${apiKey}`,
       ...initialState
     });
 
     map.addControl(new NavigationControl(), 'top-right');
 
+    map.on('click', onClick);
+
     map.on('load', () => {
       map.addSource('results-source', { 
         type: 'geojson',
-        data: {
-          type: 'FeatureCollection',
-          features: toGeoJSON($results)
-        }
+        data: toGeoJSON($results)
       });
 
       map.addSource('selection-source', {
         type: 'geojson',
-        data: {
-          type: 'FeatureCollection',
-          features: []
-        }
+        data: toGeoJSON([])
       });
 
       map.addLayer({
@@ -66,24 +74,6 @@
         id: 'selection',
         source: 'selection-source'
       });
-    });
-
-    map.on('click', evt => {
-      const bbox = [
-        [evt.point.x - CLICK_THRESHOLD, evt.point.y - CLICK_THRESHOLD],
-        [evt.point.x + CLICK_THRESHOLD, evt.point.y + CLICK_THRESHOLD]
-      ];
-
-      const selectedFeatures = map.queryRenderedFeatures(bbox, {
-        layers: ['results']
-      });
-
-      map.getSource('selection-source').setData({
-        type: 'FeatureCollection',
-        features: selectedFeatures
-      });
-
-      console.log('selected', selectedFeatures);
     });
   });
 
