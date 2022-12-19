@@ -53,26 +53,26 @@
     map.on('click', onClick);
 
     map.on('load', () => {
-      map.addSource('results-source', { 
-        type: 'geojson',
-        data: toGeoJSON($results)
-      });
-
       map.addSource('selection-source', {
         type: 'geojson',
         data: toGeoJSON([])
       });
 
-      map.addLayer({
-        ...pointStyle,
-        id: 'results',
-        source: 'results-source'
+      map.addSource('results-source', { 
+        type: 'geojson',
+        data: toGeoJSON($results)
       });
 
       map.addLayer({
         ...selectionStyle,
         id: 'selection',
         source: 'selection-source'
+      });
+
+      map.addLayer({
+        ...pointStyle,
+        id: 'results',
+        source: 'results-source'
       });
     });
   });

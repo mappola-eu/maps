@@ -32,3 +32,7 @@ export const toGeoJSON = (results, precision = 5) => {
     features: Object.values(grouped)
   };
 }
+
+export const getBounds = results => {
+  
+}

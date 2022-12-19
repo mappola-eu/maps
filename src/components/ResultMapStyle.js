@@ -8,8 +8,8 @@ export const pointStyle = {
       0, 4, 
       10, 18
     ],
-    'circle-color': '#ff0000',
-    'circle-stroke-color': '#000' ,
+    'circle-color': '#eb585b',
+    'circle-stroke-color': '#472a2d' ,
     'circle-stroke-width': 1
   }
 } 
@@ -17,9 +17,17 @@ export const pointStyle = {
 export const selectionStyle = {
   'type': 'circle',
   'paint': {
-    'circle-radius': 20,
-    'circle-color': 'transparent',
-    'circle-stroke-color': '#00ff00',
-    'circle-stroke-width': 3
+    'circle-radius': [
+      'interpolate', 
+      ['linear'],
+      ['number', ['get','count'], 1 ],
+      0, 16, 
+      10, 34
+    ],
+    'circle-color': '#eb585b',
+    'circle-opacity': 0.35,
+    'circle-stroke-color': '#eb585b',
+    'circle-stroke-width': 1,
+    'circle-stroke-opacity': 0.6
   }
 }
