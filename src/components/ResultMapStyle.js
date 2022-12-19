@@ -1,14 +1,25 @@
-export const pointStyle = ({ fill = '#ff0000', stroke = '#000', strokeWidth = 1, ramp = [0, 4, 10, 18] }) => ({
+export const pointStyle = {
   'type': 'circle',
   'paint': {
     'circle-radius': [
       'interpolate', 
       ['linear'],
       ['number', ['get','count'], 1 ],
-      ...ramp
+      0, 4, 
+      10, 18
     ],
-    'circle-color': fill,
-    'circle-stroke-color': stroke ,
-    'circle-stroke-width': strokeWidth
+    'circle-color': '#ff0000',
+    'circle-stroke-color': '#000' ,
+    'circle-stroke-width': 1
   }
-}); 
+} 
+
+export const selectionStyle = {
+  'type': 'circle',
+  'paint': {
+    'circle-radius': 20,
+    'circle-color': 'transparent',
+    'circle-stroke-color': '#00ff00',
+    'circle-stroke-width': 3
+  }
+}

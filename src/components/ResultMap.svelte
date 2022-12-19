@@ -3,7 +3,8 @@
   import { Map, NavigationControl } from 'maplibre-gl';
   import { results } from '../store/results';
   import { toGeoJSON } from './ResultMapUtils';
-  import { pointStyle } from './ResultMapStyle';
+  import { pointStyle, selectionStyle } from './ResultMapStyle';
+  import { CLICK_THRESHOLD } from '../config';
 
   import 'maplibre-gl/dist/maplibre-gl.css';
 
@@ -14,6 +15,11 @@
 
   // MapLibre map instance
   let map;
+
+  $: {
+    if (map)
+      map.getSource('results-source')?.setData($results);
+  }
 
   onMount(() => {
     if (!apiKey)
@@ -33,8 +39,7 @@
     map.addControl(new NavigationControl(), 'top-right');
 
     map.on('load', () => {
-
-      map.addSource('search', { 
+      map.addSource('results-source', { 
         type: 'geojson',
         data: {
           type: 'FeatureCollection',
@@ -42,13 +47,43 @@
         }
       });
 
-      console.log(pointStyle({}));
+      map.addSource('selection-source', {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: []
+        }
+      });
 
       map.addLayer({
-        ...pointStyle({}),
-        id: 'foobar',
-        source: 'search'
+        ...pointStyle,
+        id: 'results',
+        source: 'results-source'
       });
+
+      map.addLayer({
+        ...selectionStyle,
+        id: 'selection',
+        source: 'selection-source'
+      });
+    });
+
+    map.on('click', evt => {
+      const bbox = [
+        [evt.point.x - CLICK_THRESHOLD, evt.point.y - CLICK_THRESHOLD],
+        [evt.point.x + CLICK_THRESHOLD, evt.point.y + CLICK_THRESHOLD]
+      ];
+
+      const selectedFeatures = map.queryRenderedFeatures(bbox, {
+        layers: ['results']
+      });
+
+      map.getSource('selection-source').setData({
+        type: 'FeatureCollection',
+        features: selectedFeatures
+      });
+
+      console.log('selected', selectedFeatures);
     });
   });
 
