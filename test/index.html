@@ -15,6 +15,50 @@
   </head>
 
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- We'll mount the maphere -->
+    </div>
+
+    <script type="module">
+      import MappolaMap from '../src/index.js';
+
+      // A list of (dummy) search results
+      var results = [{
+        title: 'Result 1',
+        lonlat: [ 12.48, 41.9 ]
+      }, {
+        title: 'Result 2',
+        lonlat: [ 12.48, 41.9 ]
+      }, {
+        title: 'Result 3',
+        lonlat: [ 12.48, 41.9 ]
+      }, {
+        title: 'Result 4',
+        lonlat: [ 12.48, 41.9 ]
+      }, {
+        title: 'Result 5',
+        lonlat: [ 12.48, 41.9 ]
+      }, {
+        title: 'Result 6',
+        lonlat: [ 12.98, 41.47 ]
+      }, {
+        title: 'Result 7',
+        lonlat: [ 13.58, 43.07 ]
+      }, {
+        title: 'Result 8',
+        lonlat: [ 17.6, 40.64 ]
+      }, {
+        title: 'Result 9',
+        lonlat: [ 17.6, 40.64 ]
+      }, {
+        title: 'Result 10',
+        lonlat: [ 13.26, 38.02 ]
+      }];
+
+      window.onload = function() {
+        var m = new MappolaMap(document.getElementById('root'))
+        m.setResults(results);
+      }
+    </script>
   </body>
 </html>

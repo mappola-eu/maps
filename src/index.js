@@ -1,9 +1,5 @@
-import App from './App.svelte';
+import { API } from './API';
 
 import './index.css';
 
-const app = new App({
-	target: document.getElementById('root')
-});
-
-export default app;
+export default API;

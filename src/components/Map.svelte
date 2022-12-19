@@ -1,6 +1,7 @@
 <script>
   import { onMount, onDestroy } from 'svelte';
   import { Map } from 'maplibre-gl';
+  import { results } from '../store/results';
 
   import 'maplibre-gl/dist/maplibre-gl.css';
 
@@ -12,17 +13,23 @@
   // MapLibre map instance
   let map;
 
+  $: {
+    console.log('results', $results);
+  }
+
   onMount(() => {
     if (!apiKey)
       throw new Error("You need to configure env API_KEY first, see README");
 
-    const initialState = { lng: 139.753, lat: 35.6844, zoom: 14 };
+    const initialState = { 
+      center: [17.0, 41.5], // lon/lat
+      zoom: 6 
+    };
   
     map = new Map({
       container,
       style: `https://api.maptiler.com/maps/streets/style.json?key=${apiKey}`,
-      center: [initialState.lng, initialState.lat],
-      zoom: initialState.zoom
+      ...initialState
     });
   });
 
