@@ -2,7 +2,7 @@
   import { onMount, onDestroy } from 'svelte';
   import { Map, NavigationControl } from 'maplibre-gl';
   import { results } from '../store/results';
-  import { toGeoJSON } from './ResultMapUtils';
+  import { getBounds, toGeoJSON } from './ResultMapUtils';
   import { pointStyle, selectionStyle } from './ResultMapStyle';
   import { CLICK_THRESHOLD } from '../config';
 
@@ -73,6 +73,11 @@
         ...pointStyle,
         id: 'results',
         source: 'results-source'
+      });
+
+      map.fitBounds(getBounds($results), {
+        padding: 50, 
+        duration: 0
       });
     });
   });

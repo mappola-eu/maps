@@ -34,5 +34,29 @@ export const toGeoJSON = (results, precision = 5) => {
 }
 
 export const getBounds = results => {
-  
+  let minLat = Infinity;
+  let minLon = Infinity;
+  let maxLat = - Infinity;
+  let maxLon = - Infinity;
+
+  results.forEach(({ lonlat }) => {
+    const [lon, lat] = lonlat;
+
+    if (lon < minLon)
+      minLon = lon;
+
+    if (lon > maxLon)
+      maxLon = lon;
+
+    if (lat < minLat)
+      minLat = lat;
+
+    if (lat > maxLat)
+      maxLat = lat;
+  });  
+
+  return [
+    [minLon, minLat],
+    [maxLon, maxLat]
+  ];
 }
