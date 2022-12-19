@@ -1,9 +1,9 @@
-import Map from './Map.svelte';
+import App from './App.svelte';
 
 import './index.css';
 
-const map = new Map({
+const app = new App({
 	target: document.getElementById('root')
 });
 
-export default map;
+export default app;
