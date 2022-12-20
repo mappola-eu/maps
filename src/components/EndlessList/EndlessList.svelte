@@ -2,12 +2,11 @@
   import { onMount } from 'svelte';
 
   export let data;
-  export let padding;
 
   let container;
 
   // Size when entering/leaving
-  const MIN_SCALE = 0.92;
+  const MIN_SCALE = 0.9;
 
   // Vertical offset when entering/leaving
   const MAX_DY = 14;
@@ -18,7 +17,7 @@
     const ratio = entry.intersectionRatio;
 
     if (entry.isIntersecting) {
-      style.opacity = Math.pow(ratio, 2);
+      style.opacity = Math.sqrt(ratio);
 
       // Scale factor as a function of intersection ratio
       const scale = ratio * (1 - MIN_SCALE) + MIN_SCALE;
@@ -50,7 +49,6 @@
 
 <div 
   class={$$restProps.class ? `endless-list-container ${$$restProps.class}` : 'endless-list-container'}
-  style={`padding: ${padding ? padding.map(n => `${n}px`).join(' ') : '0'}`}
   bind:this={container}>
   {#each data as item, idx}
     <div class="endless-list-item">
@@ -67,7 +65,15 @@
     scrollbar-width: none;  
     /* Internet Explorer 10+ */
     -ms-overflow-style: none;  
+
+    width: 340px;
+    height: 420px;
+    box-sizing: border-box;
+    padding: 80px 20px;
+    margin-bottom: -50px;
   } 
+
+
 
   .endless-list-container::-webkit-scrollbar { 
     /* Safari and Chrome */

@@ -1,21 +1,29 @@
 <script>
   import { onMount } from 'svelte';
-  import MapPopupCard from './Card.svelte';
+  import MapPopupCard from './MapPopupCard.svelte';
+  import { EndlessList } from '../EndlessList';
 
   export let map;
 
   export let selected;
 
-  let x;
+  let left;
 
-  let y;
+  let bottom;
 
   const updatePosition = selected => {
+    // Selected marker lon/lat
     const { coordinates } = selected.geometry;
+
+    // Marker X/Y screen position
     const xy = map.project(coordinates);
 
-    x = xy.x;
-    y = xy.y;
+    // Map container element height
+    const { height } = map._container.getBoundingClientRect();
+
+    left = xy.x;
+
+    bottom = height - xy.y;
   }
 
   $: updatePosition(selected);
@@ -31,9 +39,15 @@
 
 <div 
   class="mappola-popup-container"
-  style={`top: ${y - 110}px; left: ${x - 160}px;`}>
+  style={`bottom: ${bottom + 20}px; left: ${left - 160}px;`}>
 
-  <MapPopupCard />
+  {#if (selected.properties.count === 1)}
+    <MapPopupCard />
+  {:else}
+    <EndlessList data={[ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]} let:idx={idx}>
+      <MapPopupCard delay={50 * idx} />
+    </EndlessList>
+  {/if}
 
 </div>
 
