@@ -1,5 +1,5 @@
 import App from './App.svelte';
-import { results } from './store/results';
+import { results } from './store';
 
 import './index.css';
 
