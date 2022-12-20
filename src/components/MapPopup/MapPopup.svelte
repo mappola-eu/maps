@@ -1,20 +1,21 @@
 <script>
   import { onMount } from 'svelte';
+  import MapPopupCard from './Card.svelte';
 
   export let map;
 
   export let selected;
 
-  let top;
+  let x;
 
-  let left;
+  let y;
 
   const updatePosition = selected => {
     const { coordinates } = selected.geometry;
     const xy = map.project(coordinates);
 
-    top = xy.y;
-    left = xy.x;
+    x = xy.x;
+    y = xy.y;
   }
 
   $: updatePosition(selected);
@@ -29,15 +30,15 @@
 </script>
 
 <div 
-  class="mappola-popup"
-  style={`top: ${top}px; left: ${left}px;`}>
-  Hello World
+  class="mappola-popup-container"
+  style={`top: ${y - 110}px; left: ${x - 160}px;`}>
+
+  <MapPopupCard />
+
 </div>
 
 <style>
-  .mappola-popup {
-    background-color: #fff;
-    padding: 10px;
+  .mappola-popup-container {
     position: absolute;
   }
 </style>
