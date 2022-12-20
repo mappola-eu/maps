@@ -2,8 +2,8 @@
   import { onMount, onDestroy } from 'svelte';
   import { Map, NavigationControl } from 'maplibre-gl';
   import { results } from '../../store/results';
-  import { getBounds, toGeoJSON } from './ResultMapUtils';
-  import { pointStyle, selectionStyle } from './ResultMapStyle';
+  import { getBounds, toGeoJSON } from './searchResultMapUtils';
+  import { pointStyle, selectionStyle } from './searchResultMapStyles';
   import { CLICK_THRESHOLD } from '../../config';
 
   import 'maplibre-gl/dist/maplibre-gl.css';

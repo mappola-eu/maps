@@ -1,5 +1,5 @@
 <script>
-  import { ResultMap, MapPopup } from './components';
+  import { SearchResultMap, MapPopup } from './components';
   import { 
     API_KEY, 
     STYLE,
@@ -9,7 +9,7 @@
   } from './config';
 </script>
 
-<ResultMap 
+<SearchResultMap 
   apiKey={API_KEY} 
   style={STYLE}
   initialState={{
@@ -21,4 +21,4 @@
 
   <MapPopup map={map} selected={selected} />
   
-</ResultMap>
+</SearchResultMap>
