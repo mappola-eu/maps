@@ -5,10 +5,22 @@
 
   export let selected;
 
+  let top;
+
+  let left;
+
+  const updatePosition = selected => {
+    const { coordinates } = selected.geometry;
+    const xy = map.project(coordinates);
+
+    top = xy.y;
+    left = xy.x;
+  }
+
+  $: updatePosition(selected);
+
   onMount(() => {
-    const onMove = evt => {
-      console.log(evt);
-    }
+    const onMove = () =>  updatePosition(selected);
 
     map.on('move', onMove);
 
@@ -16,7 +28,9 @@
   });
 </script>
 
-<div class="mappola-popup">
+<div 
+  class="mappola-popup"
+  style={`top: ${top}px; left: ${left}px;`}>
   Hello World
 </div>
 
@@ -24,5 +38,6 @@
   .mappola-popup {
     background-color: #fff;
     padding: 10px;
+    position: absolute;
   }
 </style>
