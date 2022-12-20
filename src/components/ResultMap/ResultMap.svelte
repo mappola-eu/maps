@@ -1,10 +1,10 @@
 <script>
   import { onMount, onDestroy } from 'svelte';
   import { Map, NavigationControl } from 'maplibre-gl';
-  import { results } from '../store/results';
+  import { results } from '../../store/results';
   import { getBounds, toGeoJSON } from './ResultMapUtils';
   import { pointStyle, selectionStyle } from './ResultMapStyle';
-  import { CLICK_THRESHOLD } from '../config';
+  import { CLICK_THRESHOLD } from '../../config';
 
   import 'maplibre-gl/dist/maplibre-gl.css';
 
@@ -20,6 +20,8 @@
   // MapLibre map instance
   let map;
 
+  let selectedFeature = null;
+
   const onClick = evt => {
     const bbox = [
       [evt.point.x - CLICK_THRESHOLD, evt.point.y - CLICK_THRESHOLD],
@@ -29,6 +31,11 @@
     const selectedFeatures = map.queryRenderedFeatures(bbox, {
       layers: ['results']
     });
+
+    if (selectedFeatures.length === 0)
+      selectedFeature = null;
+    else 
+      selectedFeature = selectedFeatures[0];
 
     map.getSource('selection-source').setData({
       type: 'FeatureCollection',
@@ -85,7 +92,11 @@
   onDestroy(() => map.remove());
 </script>
 
-<div class="map" id="map" bind:this={container}></div>
+<div class="map" id="map" bind:this={container}>
+  {#if (Boolean(selectedFeature))}
+    <slot selected={selectedFeature} map={map} />
+  {/if}
+</div>
 
 <style>
   .map {
