@@ -45,7 +45,7 @@
     <MapPopupCard />
   {:else}
     <EndlessList data={[ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]} let:idx={idx}>
-      <MapPopupCard delay={50 * idx} />
+      <MapPopupCard delay={200 - 50 * idx} />
     </EndlessList>
   {/if}
 

@@ -5,7 +5,10 @@
   export let delay;
 </script>
 
-<div class="mappola-popup-card" transition:fly="{{ y: 50, duration: 160, easing: cubicOut, delay }}">
+<div 
+  class="mappola-popup-card" 
+  in:fly="{{ y: 50, duration: 160, easing: cubicOut, delay }}"
+  out:fly="{{ y: 50, duration: 160, easing: cubicOut, delay: delay ? 200 - delay : 0 }}">
   <p>Search Result</p>
   <p><a href="#dummy">Link</a></p>
 </div>
