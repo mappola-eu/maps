@@ -7,8 +7,8 @@
 
 <div 
   class="mappola-popup-card" 
-  in:fly="{{ y: 50, duration: 160, easing: cubicOut, delay }}"
-  out:fly="{{ y: 50, duration: 160, easing: cubicOut, delay: delay ? 200 - delay : 0 }}">
+  in:fly="{{ y: 50, duration: 120, easing: cubicOut, delay }}"
+  out:fly="{{ y: 50, duration: 120, easing: cubicOut, delay: delay ? 120 - delay : 0 }}">
   <p>Search Result</p>
   <p><a href="#dummy">Link</a></p>
 </div>
@@ -19,10 +19,10 @@
     border-radius: 3px;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.15), 0 12px 12px -8px rgba(0, 0, 0, 0.2);
     box-sizing: border-box;
-    height: 80px;
-    margin-bottom: 6px;
+    height: 60px;
+    margin-bottom: 5px;
     padding: 10px;
-    width: 300px;
+    width: 240px;
   
     /** Temporary **/
     font-size: 14px;

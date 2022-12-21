@@ -66,8 +66,8 @@
     /* Internet Explorer 10+ */
     -ms-overflow-style: none;  
 
-    width: 340px;
-    height: 420px;
+    
+    height: 360px;
     box-sizing: border-box;
     padding: 80px 20px;
     margin-bottom: -50px;

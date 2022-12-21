@@ -39,13 +39,13 @@
 
 <div 
   class="mappola-popup-container"
-  style={`bottom: ${bottom + 20}px; left: ${left - 160}px;`}>
+  style={`bottom: ${bottom + 20}px; left: ${left - 140}px;`}>
 
   {#if (selected.properties.count === 1)}
     <MapPopupCard />
   {:else}
     <EndlessList data={[ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]} let:idx={idx}>
-      <MapPopupCard delay={200 - 50 * idx} />
+      <MapPopupCard delay={120 - 50 * idx} />
     </EndlessList>
   {/if}
 
