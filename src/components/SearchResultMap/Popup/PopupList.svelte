@@ -69,9 +69,8 @@
 
     container.childNodes.forEach(el => observer.observe(el));
 
-    return () => {
+    return () =>
       observer.disconnect();
-    }
   });
 </script>
 
@@ -86,7 +85,9 @@
       data-idx={idx}
       on:pointerenter={onPointerEnter} 
       on:pointerleave={onPointerLeave}>
-      <slot item={item} delay={idx < topIdx ? 0 : 120 - 50 * (idx - topIdx)}/>
+      <slot 
+        item={item} 
+        delay={idx < topIdx ? 0 : 120 - 50 * (idx - topIdx)}/>
     </div>
   {/each}
 
