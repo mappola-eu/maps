@@ -12,6 +12,8 @@
 
   let bottom;
 
+  $: console.log(selected);
+
   const updatePosition = selected => {
     // Selected marker lon/lat
     const { coordinates } = selected.geometry;
@@ -38,27 +40,28 @@
   });
 </script>
 
-<div 
-  class="mappola-popup-container"
-  style={`bottom: ${bottom + 20}px; left: ${left - 140}px;`}>
+{#key selected.properties.results}
+  <div 
+    class="mappola-popup-container"
+    style={`bottom: ${bottom + 20}px; left: ${left - 140}px;`}>
 
-  {#if (selected.properties.count === 1)}
-    <MapPopupCard />
-  {:else}
-    <div>
-      <EndlessList data={[ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]} let:delay={delay}>
-        <MapPopupCard delay={delay} />
-      </EndlessList>
+    {#if (selected.properties.count === 1)}
+      <MapPopupCard />
+    {:else}
+      <div>
+        <EndlessList data={[ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]} let:delay={delay}>
+          <MapPopupCard delay={delay} />
+        </EndlessList>
 
-      <div transition:fade={{ duration: 120 }} class="mappola-popup-controls right">
-        <button>X</button>
-        <button>U</button>
-        <button>D</button>
+        <div transition:fade={{ duration: 120 }} class="mappola-popup-controls right">
+          <button>X</button>
+          <button>U</button>
+          <button>D</button>
+        </div>
       </div>
-    </div>
-  {/if}
-
-</div>
+    {/if}
+  </div>
+{/key}
 
 <style>
   .mappola-popup-container {
@@ -72,5 +75,6 @@
     right: -22px;
     display: flex;
     flex-direction: column;
+    pointer-events: all;
   }
 </style>
