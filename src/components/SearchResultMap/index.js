@@ -1,3 +1,3 @@
-import SearchResultMap from './SearchResultMap.svelte';
+import SearchResultMap from './Map/Map.svelte';
 
 export default SearchResultMap;

@@ -1,9 +1,9 @@
 <script>
   import { onMount, onDestroy } from 'svelte';
   import { Map, NavigationControl } from 'maplibre-gl';
-  import MapPopup from './MapPopup/MapPopup.svelte';
-  import { getBounds, toGeoJSON } from './searchResultMapUtils';
-  import { pointStyle, selectionStyle } from './searchResultMapStyles';
+  import Popup from '../Popup/Popup.svelte';
+  import { getBounds, toGeoJSON } from './utils';
+  import { pointStyle, selectionStyle } from './styles';
   import { 
     API_KEY, 
     CLICK_THRESHOLD,
@@ -11,17 +11,15 @@
     DEFAULT_LON,
     DEFAULT_ZOOM, 
     STYLE
-  } from '../../config';
+  } from '../../../config';
 
   import 'maplibre-gl/dist/maplibre-gl.css';
 
   export let results;
 
-  // The map container DIV
-  let container;
+  let container; // Map container DIV
 
-  // MapLibre map instance
-  let map;
+  let map; // MapLibre map instance
 
   let selectedFeature = null;
 
@@ -101,8 +99,8 @@
 </script>
 
 <div class="map" id="map" bind:this={container}>
-  {#if (Boolean(selectedFeature))}
-    <MapPopup selected={selectedFeature} map={map}/>
+  {#if selectedFeature}
+    <Popup selected={selectedFeature} map={map}/>
   {/if}
 </div>
 

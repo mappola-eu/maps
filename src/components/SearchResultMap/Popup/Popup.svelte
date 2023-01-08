@@ -1,8 +1,8 @@
 <script>
   import { onMount } from 'svelte';
   import { fade } from 'svelte/transition';
-  import MapPopupCard from './MapPopupCard.svelte';
-  import { EndlessList } from './EndlessList';
+  import PopupCard from './PopupCard.svelte';
+  import PopupList from './PopupList.svelte';
   import { moveIntoView } from './moveIntoView';
 
   export let map;
@@ -50,12 +50,12 @@
     style={`bottom: ${bottom + 20}px; left: ${left - 120}px;`}>
 
     {#if (selected.properties.count === 1)}
-      <MapPopupCard />
+      <PopupCard />
     {:else}
       <div>
-        <EndlessList data={[ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]} let:delay={delay}>
-          <MapPopupCard delay={delay} />
-        </EndlessList>
+        <PopupList data={[ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]} let:delay={delay}>
+          <PopupCard delay={delay} />
+        </PopupList>
 
         <div 
           class="mappola-popup-controls right"

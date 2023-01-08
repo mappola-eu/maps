@@ -2,7 +2,7 @@
   import { fly } from 'svelte/transition';
   import { cubicOut } from 'svelte/easing';
 
-  export let delay;
+  export let delay = 0;
 </script>
 
 <div 
