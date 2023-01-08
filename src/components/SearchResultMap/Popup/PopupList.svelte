@@ -65,7 +65,7 @@
       threshold: Array.from({ length: 51 }, (v, i) => i * 0.02)
     }
 
-    var observer = new IntersectionObserver(callback, options);
+    const observer = new IntersectionObserver(callback, options);
 
     container.childNodes.forEach(el => observer.observe(el));
 
