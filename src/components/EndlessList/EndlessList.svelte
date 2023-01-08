@@ -5,6 +5,7 @@
 
   let container;
 
+  // Index of the top-most visible element, so we can time the animation
   let topIdx = 0;
 
   // Size when entering/leaving
@@ -43,6 +44,20 @@
     }
   });
 
+  /**
+   * A trick to make the parent element transparent to mouse events
+   * i the transparent regions! It's set to "pointer-events: none" via,
+   * CSS. But we programmatically enable pointer-events when the mouse
+   * enters any of the children. This way, scroll events work when the
+   * mouse is over the children. But outside of the children, all mouse
+   * events will go through to the map.
+   */
+  const onPointerEnter = () =>
+    container.style.pointerEvents = 'auto';
+
+  const onPointerLeave = () =>
+    container.style.pointerEvents = 'none';
+
   onMount(() => {
     const options = {
       root: container,
@@ -54,18 +69,27 @@
 
     container.childNodes.forEach(el => observer.observe(el));
 
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+    }
   });
 </script>
 
 <div 
-  class={$$restProps.class ? `endless-list-container ${$$restProps.class}` : 'endless-list-container'}
-  bind:this={container}>
+  bind:this={container}
+  class={$$restProps.class ? 
+    `endless-list-container ${$$restProps.class}` : 'endless-list-container'}>
+  
   {#each data as item, idx}
-    <div class="endless-list-item" data-idx={idx}>
+    <div 
+      class="endless-list-item" 
+      data-idx={idx}
+      on:pointerenter={onPointerEnter} 
+      on:pointerleave={onPointerLeave}>
       <slot item={item} delay={idx < topIdx ? 0 : 120 - 50 * (idx - topIdx)}/>
     </div>
   {/each}
+
 </div>
 
 <style>
@@ -76,7 +100,7 @@
     box-sizing: border-box;
     padding: 60px 10px;
     margin-bottom: -30px;
-    pointer-events: all;
+    pointer-events: none;
 
     scrollbar-width: none;  /* Firefox */
     -ms-overflow-style: none;  /* Internet Explorer 10+ */
@@ -89,5 +113,7 @@
   .endless-list-item {
     position: relative;
     transition: opacity 0.2s;
+    pointer-events: auto;
+    padding-bottom: 5px;
   }
 </style>

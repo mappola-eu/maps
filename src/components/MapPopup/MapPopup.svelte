@@ -53,10 +53,15 @@
           <MapPopupCard delay={delay} />
         </EndlessList>
 
-        <div transition:fade={{ duration: 120 }} class="mappola-popup-controls right">
+        <div 
+          class="mappola-popup-controls right"
+          in:fade={{ duration: 200, delay: 170 }}
+          out:fade={{ duration: 120 }}>
+
           <button>X</button>
           <button>U</button>
           <button>D</button>
+
         </div>
       </div>
     {/if}

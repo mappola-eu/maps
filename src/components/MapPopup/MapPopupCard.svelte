@@ -20,7 +20,6 @@
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.15), 0 12px 12px -8px rgba(0, 0, 0, 0.2);
     box-sizing: border-box;
     height: 60px;
-    margin-bottom: 5px;
     padding: 10px;
     width: 240px;
   
