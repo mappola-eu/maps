@@ -3,16 +3,17 @@
   import { fade } from 'svelte/transition';
   import MapPopupCard from './MapPopupCard.svelte';
   import { EndlessList } from '../EndlessList';
+  import { moveIntoView } from './moveIntoView';
 
   export let map;
 
   export let selected;
 
+  let el;
+
   let left;
 
   let bottom;
-
-  $: console.log(selected);
 
   const updatePosition = selected => {
     // Selected marker lon/lat
@@ -36,12 +37,15 @@
 
     map.on('move', onMove);
 
+    moveIntoView(map, el.getBoundingClientRect());
+
     return () => map.off('move', onMove);
   });
 </script>
 
 {#key selected.properties.results}
   <div 
+    bind:this={el}
     class="mappola-popup-container"
     style={`bottom: ${bottom + 20}px; left: ${left - 120}px;`}>
 
@@ -61,7 +65,6 @@
           <button>X</button>
           <button>U</button>
           <button>D</button>
-
         </div>
       </div>
     {/if}
