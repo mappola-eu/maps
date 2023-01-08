@@ -20,7 +20,7 @@
     </div>
 
     <script type="module">
-      import MappolaMap from '../src/index.js';
+      import { SearchResultMap } from '../src/index.js';
 
       // A list of (dummy) search results
       var results = [{
@@ -76,8 +76,7 @@
       }];
 
       window.onload = function() {
-        var m = new MappolaMap(document.getElementById('root'))
-        m.setResults(results);
+        var m = new SearchResultMap(document.getElementById('root'), results);
       }
     </script>
   </body>

@@ -1,18 +1,28 @@
-import App from './App.svelte';
-import { results } from './store';
+import SvelteSearchResultMap from './components/SearchResultMap';
+import SvelteProfileMap from './components/ProfileMap';
 
-import './index.css';
+export class SearchResultMap {
 
-class API {
-
-  constructor(container) {
-    this.map = new App({
-      target: container
+  constructor(container, results = []) {
+    this.map = new SvelteSearchResultMap({
+      target: container,
+      props: { results }
     });
   }
 
-  setResults = r => results.set(r);
+  setResults = results =>
+    this.map.$set({ results });
 
 }
 
-export default API;
+export class ProfileMap {
+
+  constructor(container, data) {
+    this.map = new SvelteProfileMap({
+      target: container,
+      props: { data }
+    });
+  }
+
+}
+

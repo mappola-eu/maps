@@ -2,7 +2,7 @@
   import { onMount } from 'svelte';
   import { fade } from 'svelte/transition';
   import MapPopupCard from './MapPopupCard.svelte';
-  import { EndlessList } from '../EndlessList';
+  import { EndlessList } from './EndlessList';
   import { moveIntoView } from './moveIntoView';
 
   export let map;

@@ -1,18 +1,21 @@
 <script>
   import { onMount, onDestroy } from 'svelte';
   import { Map, NavigationControl } from 'maplibre-gl';
-  import { results } from '../../store/results';
+  import MapPopup from './MapPopup/MapPopup.svelte';
   import { getBounds, toGeoJSON } from './searchResultMapUtils';
   import { pointStyle, selectionStyle } from './searchResultMapStyles';
-  import { CLICK_THRESHOLD } from '../../config';
+  import { 
+    API_KEY, 
+    CLICK_THRESHOLD,
+    DEFAULT_LAT,
+    DEFAULT_LON,
+    DEFAULT_ZOOM, 
+    STYLE
+  } from '../../config';
 
   import 'maplibre-gl/dist/maplibre-gl.css';
 
-  export let apiKey;
-
-  export let style;
-
-  export let initialState;
+  export let results;
 
   // The map container DIV
   let container;
@@ -21,6 +24,11 @@
   let map;
 
   let selectedFeature = null;
+
+  const initialState={
+    center: [ DEFAULT_LON, DEFAULT_LAT ],
+    zoom: DEFAULT_ZOOM
+  }
 
   const onClick = evt => {
     const bbox = [
@@ -45,13 +53,13 @@
 
   $: {
     if (map)
-      map.getSource('results-source')?.setData($results);
+      map.getSource('results-source')?.setData(results);
   }
 
   onMount(() => {
     map = new Map({
       container,
-      style: `https://api.maptiler.com/maps/${style}/style.json?key=${apiKey}`,
+      style: `https://api.maptiler.com/maps/${STYLE}/style.json?key=${API_KEY}`,
       ...initialState
     });
 
@@ -67,7 +75,7 @@
 
       map.addSource('results-source', { 
         type: 'geojson',
-        data: toGeoJSON($results)
+        data: toGeoJSON(results)
       });
 
       map.addLayer({
@@ -82,7 +90,7 @@
         source: 'results-source'
       });
 
-      map.fitBounds(getBounds($results), {
+      map.fitBounds(getBounds(results), {
         padding: 50, 
         duration: 0
       });
@@ -94,7 +102,7 @@
 
 <div class="map" id="map" bind:this={container}>
   {#if (Boolean(selectedFeature))}
-    <slot selected={selectedFeature} map={map} />
+    <MapPopup selected={selectedFeature} map={map}/>
   {/if}
 </div>
 
