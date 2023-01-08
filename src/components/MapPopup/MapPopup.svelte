@@ -43,7 +43,7 @@
 {#key selected.properties.results}
   <div 
     class="mappola-popup-container"
-    style={`bottom: ${bottom + 20}px; left: ${left - 140}px;`}>
+    style={`bottom: ${bottom + 20}px; left: ${left - 120}px;`}>
 
     {#if (selected.properties.count === 1)}
       <MapPopupCard />
