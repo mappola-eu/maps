@@ -23,11 +23,6 @@
 
   let selectedFeature = null;
 
-  const initialState={
-    center: [ DEFAULT_LON, DEFAULT_LAT ],
-    zoom: DEFAULT_ZOOM
-  }
-
   const onMapClicked = evt => {
     const bbox = [
       [evt.point.x - CLICK_THRESHOLD, evt.point.y - CLICK_THRESHOLD],
@@ -60,7 +55,10 @@
     map = new Map({
       container,
       style: `https://api.maptiler.com/maps/${STYLE}/style.json?key=${API_KEY}`,
-      ...initialState
+      center: [ DEFAULT_LON, DEFAULT_LAT ],
+      zoom: DEFAULT_ZOOM,
+      bounds: getBounds(results), // Bounds override center and zoom if defined
+      fitBoundsOptions: { padding: 50 }
     });
 
     map.addControl(new NavigationControl(), 'top-right');
@@ -88,11 +86,6 @@
         ...pointStyle,
         id: 'results',
         source: 'results-source'
-      });
-
-      map.fitBounds(getBounds(results), {
-        padding: 50, 
-        duration: 0
       });
     });
   });
