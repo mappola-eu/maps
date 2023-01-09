@@ -14,17 +14,20 @@
 
   export let selected;
 
+  export let results;
+
   let el;
 
   let left;
 
   let bottom;
 
-  let scrollBy; // Bound from PopupList
+  // Bound from PopupList
+  let scrollBy; 
 
   // Scroll button states
-  let isUpDisabled = true;
-
+  let isUpDisabled = true;  
+  
   let isDownDisabled = false;
 
   const dispatch = createEventDispatcher();
@@ -70,9 +73,9 @@
     class="mappola-popup-container"
     style={`bottom: ${bottom + 20}px; left: ${left - 120}px;`}>
 
-    {#if (selected.properties.count === 1)}
+    {#if (results.length === 1)}
       <div class="wrapper">
-        <PopupCard />
+        <PopupCard item={results[0]}/>
 
         <div 
           class="mappola-popup-controls single"
@@ -86,7 +89,7 @@
     {:else}
       <div class="wrapper">
         <PopupList 
-          data={[ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]} 
+          items={results} 
           bind:scrollBy={scrollBy}
           on:scroll={onListScrolled}>
         </PopupList>

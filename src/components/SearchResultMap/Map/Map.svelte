@@ -23,6 +23,11 @@
 
   let selectedFeature = null;
 
+  const getResultsAt = selectedFeature => {
+    const ids = new Set(JSON.parse(selectedFeature.properties.results));
+    return results.filter(result => ids.has(result.id));
+  }
+
   const onMapClicked = evt => {
     const bbox = [
       [evt.point.x - CLICK_THRESHOLD, evt.point.y - CLICK_THRESHOLD],
@@ -97,6 +102,7 @@
   {#if selectedFeature}
     <Popup 
       selected={selectedFeature} 
+      results={getResultsAt(selectedFeature)}
       map={map}
       on:close={onClosePopup} />
   {/if}

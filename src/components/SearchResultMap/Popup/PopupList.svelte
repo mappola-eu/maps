@@ -2,7 +2,7 @@
   import { createEventDispatcher, onMount } from 'svelte';
   import PopupCard from './PopupCard.svelte';
 
-  export let data;
+  export let items;
 
   let container;
 
@@ -97,7 +97,7 @@
   bind:this={container}
   class="endless-list-container">
   
-  {#each data as item, idx}
+  {#each items as item, idx}
     <div 
       class="endless-list-item" 
       data-idx={idx}
@@ -105,8 +105,8 @@
       on:pointerleave={onPointerLeave}>
 
       <PopupCard
-        index={idx} 
-        delay={idx < topIdx ? 0 : 120 - 50 * (idx - topIdx)} />
+        delay={idx < topIdx ? 0 : 120 - 50 * (idx - topIdx)}
+        item={item} />
     </div>
   {/each}
 

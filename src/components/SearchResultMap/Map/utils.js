@@ -2,7 +2,7 @@ const toFeature = result => ({
   type: 'Feature',
   properties: {
     count: 1,
-    results: [ result ]
+    results: [ result.id ]
   },
   geometry: {
     type: 'Point',
@@ -25,7 +25,7 @@ export const toGeoJSON = (results, precision = 5) => {
     const feature = grouped[key];
     
     if (feature) {
-      feature.properties.results.push(result);
+      feature.properties.results.push(result.id);
       feature.properties.count += 1;
     } else {
       grouped[key] = toFeature(result);
