@@ -1,6 +1,10 @@
 <script>
-  import { onMount } from 'svelte';
+  import { createEventDispatcher, onMount } from 'svelte';
   import { fade } from 'svelte/transition';
+  import Icon from 'svelte-icons-pack/Icon.svelte';
+  import CgClose from 'svelte-icons-pack/cg/CgClose';
+  import CgChevronDown from 'svelte-icons-pack/cg/CgChevronDown';
+  import CgChevronUp from 'svelte-icons-pack/cg/CgChevronUp';
   import PopupCard from './PopupCard.svelte';
   import PopupList from './PopupList.svelte';
   import { moveIntoView } from './moveIntoView';
@@ -14,6 +18,8 @@
   let left;
 
   let bottom;
+
+  const dispatch = createEventDispatcher();
 
   const updatePosition = selected => {
     // Selected marker lon/lat
@@ -62,9 +68,17 @@
           in:fade={{ duration: 200, delay: 170 }}
           out:fade={{ duration: 120 }}>
 
-          <button>X</button>
-          <button>U</button>
-          <button>D</button>
+          <button on:click={() => dispatch('close')}>
+            <Icon src={CgClose} />
+          </button>
+
+          <button>
+            <Icon src={CgChevronUp} />
+          </button>
+
+          <button>
+            <Icon src={CgChevronDown} />
+          </button>
         </div>
       </div>
     {/if}
@@ -78,11 +92,29 @@
   }
 
   .mappola-popup-controls.right {
+    padding: 3px 0;
     position: absolute;
     top: 60px;
-    right: -22px;
+    right: -36px;
     display: flex;
     flex-direction: column;
     pointer-events: all;
+  }
+
+  .mappola-popup-controls.right button {
+    align-items: center;
+    background-color: #7c7c7c;
+    border: none;
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.15), 0 12px 12px -8px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    font-size: 21px;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    margin: 3px 0;
+    outline: none;
   }
 </style>

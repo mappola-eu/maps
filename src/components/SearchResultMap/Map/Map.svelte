@@ -2,7 +2,7 @@
   import { onMount, onDestroy } from 'svelte';
   import { Map, NavigationControl } from 'maplibre-gl';
   import Popup from '../Popup/Popup.svelte';
-  import { getBounds, toGeoJSON } from './utils';
+  import { getBounds, toGeoJSON, EMPTY_GEOJSON } from './utils';
   import { pointStyle, selectionStyle } from './styles';
   import { 
     API_KEY, 
@@ -49,10 +49,12 @@
     });
   }
 
-  $: {
-    if (map)
-      map.getSource('results-source')?.setData(results);
+  const onDeselect = () => {
+    selectedFeature = null;
+    map.getSource('selection-source').setData(EMPTY_GEOJSON);
   }
+
+  $: map?.getSource('results-source')?.setData(toGeoJSON(results));
 
   onMount(() => {
     map = new Map({
@@ -71,15 +73,15 @@
         data: toGeoJSON([])
       });
 
-      map.addSource('results-source', { 
-        type: 'geojson',
-        data: toGeoJSON(results)
-      });
-
       map.addLayer({
         ...selectionStyle,
         id: 'selection',
         source: 'selection-source'
+      });
+
+      map.addSource('results-source', { 
+        type: 'geojson',
+        data: toGeoJSON(results)
       });
 
       map.addLayer({
@@ -100,7 +102,10 @@
 
 <div class="map" id="map" bind:this={container}>
   {#if selectedFeature}
-    <Popup selected={selectedFeature} map={map}/>
+    <Popup 
+      selected={selectedFeature} 
+      map={map}
+      on:close={onDeselect} />
   {/if}
 </div>
 

@@ -10,6 +10,11 @@ const toFeature = result => ({
   }
 });
 
+export const EMPTY_GEOJSON = {
+  type: 'FeatureCollection',
+  features: []
+}
+
 export const toGeoJSON = (results, precision = 5) => {
   const grouped = {};
 
