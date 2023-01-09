@@ -6,30 +6,24 @@
 
   let container;
 
-  const dispatch = createEventDispatcher();
-
-  // Index of the top-most visible element, so we can time the animation
-  let topIdx = 0;
-
-  let bottomIdx = 0;
-
-  export const scrollBy = step => {
-    const targetIdx = Math.min(Math.max(0, topIdx + step), data.length - 1 - step);
-    const targetEl = document.querySelector(`.endless-list-item[data-idx='${targetIdx}']`);
-
-    if (targetEl) {
-      const targetOffset = targetEl.offsetTop - 60;
-      container.scrollTo({ top: targetOffset, behavior: 'smooth' });
-
-      setTimeout(() => topIdx = targetIdx, 500);
-    }
-  }
-
   // Size when entering/leaving
   const MIN_SCALE = 0.9;
 
   // Vertical offset when entering/leaving
   const MAX_DY = 18;
+
+  // Pixel increment for one scroll step
+  const SCROLL_STEP = 90;
+
+  const dispatch = createEventDispatcher();
+
+  // Index of the top-most visible element, so we can time the animation
+  let topIdx = 0;
+
+  export const scrollBy = step => {
+    const container = document.querySelector('.endless-list-container');
+    container.scrollTo({ top: container.scrollTop + SCROLL_STEP * step, behavior: 'smooth' });
+  }
 
   // Intersection observer callback
   const callback = entries => {
@@ -101,8 +95,7 @@
 
 <div 
   bind:this={container}
-  class={$$restProps.class ? 
-    `endless-list-container ${$$restProps.class}` : 'endless-list-container'}>
+  class="endless-list-container">
   
   {#each data as item, idx}
     <div 

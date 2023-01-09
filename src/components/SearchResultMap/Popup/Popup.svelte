@@ -1,6 +1,7 @@
 <script>
   import { createEventDispatcher, onMount } from 'svelte';
-  import { fade } from 'svelte/transition';
+  import { fade, fly } from 'svelte/transition';
+  import { cubicOut } from 'svelte/easing';
   import Icon from 'svelte-icons-pack/Icon.svelte';
   import CgClose from 'svelte-icons-pack/cg/CgClose';
   import CgChevronDown from 'svelte-icons-pack/cg/CgChevronDown';
@@ -70,9 +71,20 @@
     style={`bottom: ${bottom + 20}px; left: ${left - 120}px;`}>
 
     {#if (selected.properties.count === 1)}
-      <PopupCard />
+      <div class="wrapper">
+        <PopupCard />
+
+        <div 
+          class="mappola-popup-controls single"
+          transition:fly={{ y: 50, duration: 120, easing: cubicOut }}>
+
+          <button on:click={() => dispatch('close')}>
+            <Icon src={CgClose} />
+          </button>
+        </div>
+      </div>
     {:else}
-      <div>
+      <div class="wrapper">
         <PopupList 
           data={[ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]} 
           bind:scrollBy={scrollBy}
@@ -111,6 +123,12 @@
     pointer-events: none;
   }
 
+  .mappola-popup-controls.single {
+    position: absolute;
+    top: 9px;
+    right: -45px;
+  }
+
   .mappola-popup-controls.right {
     padding: 3px 0;
     position: absolute;
@@ -121,7 +139,7 @@
     pointer-events: all;
   }
 
-  .mappola-popup-controls.right button {
+  .mappola-popup-controls button {
     align-items: center;
     background-color: #7c7c7c;
     border: none;
@@ -139,11 +157,11 @@
     transition: background-color 0.2s;
   }
 
-  .mappola-popup-controls.right button:not(:disabled):hover {
+  .mappola-popup-controls button:not(:disabled):hover {
     background-color: #979797;
   } 
 
-  .mappola-popup-controls.right button:disabled {
+  .mappola-popup-controls button:disabled {
     background-color: #c8c8c8;
     color: #e2e2e2;
   }
