@@ -8,6 +8,18 @@
   // Index of the top-most visible element, so we can time the animation
   let topIdx = 0;
 
+  export const scrollBy = step => {
+    const targetIdx = Math.min(Math.max(0, topIdx + step), data.length - 1 - step);
+    const targetEl = document.querySelector(`.endless-list-item[data-idx='${targetIdx}']`);
+
+    if (targetEl) {
+      const targetOffset = targetEl.offsetTop - 60;
+      container.scrollTo({ top: targetOffset, behavior: 'smooth' });
+
+      setTimeout(() => topIdx = targetIdx, 500);
+    }
+  }
+
   // Size when entering/leaving
   const MIN_SCALE = 0.9;
 
@@ -23,7 +35,7 @@
       // Is this element exiting (top of container) or entering (bottom)
       const isExiting = entry.boundingClientRect.y < entry.rootBounds.y;
 
-      if (isExiting && ratio < 1)
+      if (isExiting && ratio < 0.9)
         topIdx = parseInt(entry.target.dataset.idx);
 
       style.opacity = Math.sqrt(ratio);
@@ -87,6 +99,7 @@
       on:pointerleave={onPointerLeave}>
       <slot 
         item={item} 
+        index={idx}
         delay={idx < topIdx ? 0 : 120 - 50 * (idx - topIdx)}/>
     </div>
   {/each}

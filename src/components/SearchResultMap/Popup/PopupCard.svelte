@@ -3,13 +3,15 @@
   import { cubicOut } from 'svelte/easing';
 
   export let delay = 0;
+
+  export let index;
 </script>
 
 <div 
   class="mappola-popup-card" 
   in:fly="{{ y: 50, duration: 120, easing: cubicOut, delay }}"
   out:fly="{{ y: 50, duration: 120, easing: cubicOut, delay: delay ? 120 - delay : 0 }}">
-  <p>Search Result</p>
+  <p>Search Result {index}</p>
   <p><a href="#dummy">Link</a></p>
 </div>
 

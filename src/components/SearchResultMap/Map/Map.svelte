@@ -28,7 +28,7 @@
     zoom: DEFAULT_ZOOM
   }
 
-  const onClick = evt => {
+  const onMapClicked = evt => {
     const bbox = [
       [evt.point.x - CLICK_THRESHOLD, evt.point.y - CLICK_THRESHOLD],
       [evt.point.x + CLICK_THRESHOLD, evt.point.y + CLICK_THRESHOLD]
@@ -49,7 +49,7 @@
     });
   }
 
-  const onDeselect = () => {
+  const onClosePopup = () => {
     selectedFeature = null;
     map.getSource('selection-source').setData(EMPTY_GEOJSON);
   }
@@ -65,7 +65,7 @@
 
     map.addControl(new NavigationControl(), 'top-right');
 
-    map.on('click', onClick);
+    map.on('click', onMapClicked);
 
     map.on('load', () => {
       map.addSource('selection-source', {
@@ -105,7 +105,7 @@
     <Popup 
       selected={selectedFeature} 
       map={map}
-      on:close={onDeselect} />
+      on:close={onClosePopup} />
   {/if}
 </div>
 

@@ -19,7 +19,11 @@
 
   let bottom;
 
+  let scrollBy; // Bound from PopupList
+
   const dispatch = createEventDispatcher();
+
+  $: updatePosition(selected);
 
   const updatePosition = selected => {
     // Selected marker lon/lat
@@ -35,8 +39,6 @@
 
     bottom = height - xy.y;
   }
-
-  $: updatePosition(selected);
 
   onMount(() => {
     const onMove = () =>  updatePosition(selected);
@@ -59,8 +61,14 @@
       <PopupCard />
     {:else}
       <div>
-        <PopupList data={[ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]} let:delay={delay}>
-          <PopupCard delay={delay} />
+        <PopupList 
+          data={[ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]} 
+          bind:scrollBy={scrollBy}
+          let:index={index}
+          let:delay={delay}>
+
+          <PopupCard index={index} delay={delay} />
+        
         </PopupList>
 
         <div 
@@ -72,11 +80,11 @@
             <Icon src={CgClose} />
           </button>
 
-          <button>
+          <button on:click={() => scrollBy(-2)}>
             <Icon src={CgChevronUp} />
           </button>
 
-          <button>
+          <button on:click={() => scrollBy(2)}>
             <Icon src={CgChevronDown} />
           </button>
         </div>
