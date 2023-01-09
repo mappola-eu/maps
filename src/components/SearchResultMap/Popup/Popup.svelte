@@ -127,6 +127,7 @@
     position: absolute;
     top: 9px;
     right: -45px;
+    pointer-events: auto;
   }
 
   .mappola-popup-controls.right {
@@ -136,7 +137,7 @@
     right: -36px;
     display: flex;
     flex-direction: column;
-    pointer-events: all;
+    pointer-events: auto;
   }
 
   .mappola-popup-controls button {
