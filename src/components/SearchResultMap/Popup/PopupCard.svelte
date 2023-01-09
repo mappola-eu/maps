@@ -4,7 +4,7 @@
 
   export let delay = 0;
 
-  export let index;
+  export let index = 0;
 </script>
 
 <div 

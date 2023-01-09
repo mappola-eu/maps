@@ -21,6 +21,11 @@
 
   let scrollBy; // Bound from PopupList
 
+  // Scroll button states
+  let isUpDisabled = true;
+
+  let isDownDisabled = false;
+
   const dispatch = createEventDispatcher();
 
   $: updatePosition(selected);
@@ -38,6 +43,13 @@
     left = xy.x;
 
     bottom = height - xy.y;
+  }
+
+  const onListScrolled = evt => {
+    const { from, to } = evt.detail;
+    
+    isUpDisabled = from === 0;
+    isDownDisabled = to === 100;
   }
 
   onMount(() => {
@@ -64,11 +76,7 @@
         <PopupList 
           data={[ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]} 
           bind:scrollBy={scrollBy}
-          let:index={index}
-          let:delay={delay}>
-
-          <PopupCard index={index} delay={delay} />
-        
+          on:scroll={onListScrolled}>
         </PopupList>
 
         <div 
@@ -80,11 +88,15 @@
             <Icon src={CgClose} />
           </button>
 
-          <button on:click={() => scrollBy(-2)}>
+          <button 
+            disabled={isUpDisabled}
+            on:click={() => scrollBy(-2)}>
             <Icon src={CgChevronUp} />
           </button>
 
-          <button on:click={() => scrollBy(2)}>
+          <button
+            disabled={isDownDisabled}
+            on:click={() => scrollBy(2)}>
             <Icon src={CgChevronDown} />
           </button>
         </div>
@@ -124,5 +136,15 @@
     height: 36px;
     margin: 3px 0;
     outline: none;
+    transition: background-color 0.2s;
+  }
+
+  .mappola-popup-controls.right button:not(:disabled):hover {
+    background-color: #979797;
+  } 
+
+  .mappola-popup-controls.right button:disabled {
+    background-color: #c8c8c8;
+    color: #e2e2e2;
   }
 </style>

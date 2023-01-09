@@ -1,12 +1,17 @@
 <script>
-  import { onMount } from 'svelte';
+  import { createEventDispatcher, onMount } from 'svelte';
+  import PopupCard from './PopupCard.svelte';
 
   export let data;
 
   let container;
 
+  const dispatch = createEventDispatcher();
+
   // Index of the top-most visible element, so we can time the animation
   let topIdx = 0;
+
+  let bottomIdx = 0;
 
   export const scrollBy = step => {
     const targetIdx = Math.min(Math.max(0, topIdx + step), data.length - 1 - step);
@@ -27,34 +32,42 @@
   const MAX_DY = 18;
 
   // Intersection observer callback
-  const callback = entries => entries.forEach(entry => {
-    const { style } = entry.target;
-    const ratio = entry.intersectionRatio;
+  const callback = entries => {
 
-    if (entry.isIntersecting) {
-      // Is this element exiting (top of container) or entering (bottom)
-      const isExiting = entry.boundingClientRect.y < entry.rootBounds.y;
+    entries.forEach(entry => {
+      const { style } = entry.target;
+      const ratio = entry.intersectionRatio;
 
-      if (isExiting && ratio < 0.9)
-        topIdx = parseInt(entry.target.dataset.idx);
+      if (entry.isIntersecting) {
+        // Is this element exiting (top of container) or entering (bottom)
+        const isExiting = entry.boundingClientRect.y < entry.rootBounds.y;
 
-      style.opacity = Math.sqrt(ratio);
+        if (isExiting && ratio < 0.9)
+          topIdx = parseInt(entry.target.dataset.idx);
 
-      // Scale factor as a function of intersection ratio
-      const scale = ratio * (1 - MIN_SCALE) + MIN_SCALE;
+        style.opacity = Math.sqrt(ratio);
 
-      // Vertical offset
-      const dy = MAX_DY - (ratio * MAX_DY);
-      style.transform = `scale(${scale}) translateY(${isExiting ? dy : -dy}px)`;
+        // Scale factor as a function of intersection ratio
+        const scale = ratio * (1 - MIN_SCALE) + MIN_SCALE;
 
-      if (ratio > 0.9)
-        style.zIndex = 1;
-      else
-        style.zIndex = 0;
-    } else {
-      style.opacity = 0;
-    }
-  });
+        // Vertical offset
+        const dy = MAX_DY - (ratio * MAX_DY);
+        style.transform = `scale(${scale}) translateY(${isExiting ? dy : -dy}px)`;
+
+        if (ratio > 0.9)
+          style.zIndex = 1;
+        else
+          style.zIndex = 0;
+      } else {
+        style.opacity = 0;
+      }
+    });
+
+    const from = Math.round(100 * container.scrollTop / container.scrollHeight);
+    const to = Math.round(100 * (container.scrollTop + container.offsetHeight) / container.scrollHeight);
+
+    dispatch('scroll', { from, to });
+  }
 
   /**
    * A trick to make the parent element transparent to mouse events
@@ -97,10 +110,10 @@
       data-idx={idx}
       on:pointerenter={onPointerEnter} 
       on:pointerleave={onPointerLeave}>
-      <slot 
-        item={item} 
-        index={idx}
-        delay={idx < topIdx ? 0 : 120 - 50 * (idx - topIdx)}/>
+
+      <PopupCard
+        index={idx} 
+        delay={idx < topIdx ? 0 : 120 - 50 * (idx - topIdx)} />
     </div>
   {/each}
 
