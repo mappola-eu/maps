@@ -100,6 +100,14 @@
           on:scroll={onListScrolled}>
         </PopupList>
 
+        <!-- div 
+          class="mappola-popup-controls left">
+          
+          <p class="count">
+            {results.length} Results
+          </p>
+        </div -->
+
         <div 
           class="mappola-popup-controls right"
           in:fade={{ duration: 200, delay: 170 }}
@@ -147,15 +155,36 @@
     padding: 3px 0;
     position: absolute;
     top: 60px;
-    right: -36px;
+    left: 260px;
     display: flex;
     flex-direction: column;
     pointer-events: auto;
   }
 
+  /*
+  .mappola-popup-controls.left {
+    position:absolute;
+    right: 265px;
+    top: 60px;
+  }
+
+  .mappola-popup-controls.left p {
+    white-space: nowrap;
+    background-color: #fff;
+    border-radius: 18px;
+    height: 36px;
+    padding: 0 18px;
+    font-size: 15px;
+    font-weight: 6;
+    line-height: 37px;
+    margin: 5px 0;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.15), 0 12px 12px -8px rgba(0, 0, 0, 0.2);
+  }
+  */
+
   .mappola-popup-controls button {
     align-items: center;
-    background-color: #7c7c7c;
+    background-color: #472a2d;
     border: none;
     border-radius: 50%;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.15), 0 12px 12px -8px rgba(0, 0, 0, 0.2);
@@ -172,11 +201,11 @@
   }
 
   .mappola-popup-controls button:not(:disabled):hover {
-    background-color: #979797;
+    background-color: #674d50;
   } 
 
   .mappola-popup-controls button:disabled {
-    background-color: #c8c8c8;
-    color: #e2e2e2;
+    background-color: #9f9596;
+    color: #c6c3c3;
   }
 </style>
