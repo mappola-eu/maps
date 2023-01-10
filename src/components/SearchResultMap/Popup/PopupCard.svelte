@@ -24,6 +24,7 @@
     height: 60px;
     padding: 10px;
     width: 240px;
+    pointer-events: auto;
   
     /** Temporary **/
     font-size: 14px;

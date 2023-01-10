@@ -63,19 +63,11 @@
     dispatch('scroll', { from, to });
   }
 
-  /**
-   * A trick to make the parent element transparent to mouse events
-   * i the transparent regions! It's set to "pointer-events: none" via,
-   * CSS. But we programmatically enable pointer-events when the mouse
-   * enters any of the children. This way, scroll events work when the
-   * mouse is over the children. But outside of the children, all mouse
-   * events will go through to the map.
-   */
-  const onPointerEnter = () =>
-    container.style.pointerEvents = 'auto';
-
-  const onPointerLeave = () =>
-    container.style.pointerEvents = 'none';
+  // Close the popup when clicking on transparent areas
+  const onPointerDown = evt => {
+    if (evt.target === container)
+      dispatch('close');
+  }
 
   onMount(() => {
     const options = {
@@ -95,14 +87,13 @@
 
 <div 
   bind:this={container}
+  on:pointerdown={onPointerDown}
   class="endless-list-container">
   
   {#each items as item, idx}
     <div 
       class="endless-list-item" 
-      data-idx={idx}
-      on:pointerenter={onPointerEnter} 
-      on:pointerleave={onPointerLeave}>
+      data-idx={idx}>
 
       <PopupCard
         item={item}
@@ -120,7 +111,7 @@
     box-sizing: border-box;
     padding: 60px 10px;
     margin-bottom: -30px;
-    pointer-events: none;
+    pointer-events: auto;
 
     scrollbar-width: none;  /* Firefox */
     -ms-overflow-style: none;  /* Internet Explorer 10+ */

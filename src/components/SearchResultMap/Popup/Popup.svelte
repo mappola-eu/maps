@@ -97,6 +97,7 @@
         <PopupList 
           items={results} 
           bind:scrollBy={scrollBy}
+          on:close
           on:scroll={onListScrolled}>
         </PopupList>
 
