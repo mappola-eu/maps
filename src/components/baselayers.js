@@ -1,7 +1,7 @@
 import { 
   API_KEY, 
   STYLE
-} from '../../../config';
+} from '../config';
 
 const STYLES = {
   'maptiler': `https://api.maptiler.com/maps/${STYLE}/style.json?key=${API_KEY}`,

@@ -17,10 +17,18 @@ export class SearchResultMap {
 
 export class ProfileMap {
 
-  constructor(container, data) {
+  constructor(config) {
+    if (!config.parent)
+      console.error('Missing property \'parent\' in ProfileMap config');
+
+    if (!config.parent.nodeType)
+      console.error('ProfileMap parent must be a DOM node');    
+
+    const { parent, ...rest } = config;
+
     this.map = new SvelteProfileMap({
-      target: container,
-      props: { data }
+      target: config.parent,
+      props: { ...rest }
     });
   }
 

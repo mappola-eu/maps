@@ -3,15 +3,13 @@
   import { Map, NavigationControl } from 'maplibre-gl';
   import Popup from '../Popup/Popup.svelte';
   import { getBounds, toGeoJSON, EMPTY_GEOJSON } from './utils';
-  import { pointStyle, selectionStyle } from './styles';
-  import { getStyle } from './baselayers';
+  import { pointStyle, selectionStyle } from '../../styles';
+  import { getStyle } from '../../baselayers';
   import { 
-    API_KEY, 
     CLICK_THRESHOLD,
     DEFAULT_LAT,
     DEFAULT_LON,
     DEFAULT_ZOOM, 
-    STYLE
   } from '../../../config';
 
   import 'maplibre-gl/dist/maplibre-gl.css';
@@ -99,7 +97,7 @@
   onDestroy(() => map.remove());
 </script>
 
-<div class="map" id="map" bind:this={container}>
+<div class="map" bind:this={container}>
   {#if selectedFeature}
     <Popup 
       selected={selectedFeature} 
