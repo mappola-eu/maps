@@ -4,6 +4,7 @@
   import Popup from '../Popup/Popup.svelte';
   import { getBounds, toGeoJSON, EMPTY_GEOJSON } from './utils';
   import { pointStyle, selectionStyle } from './styles';
+  import { getStyle } from './baselayers';
   import { 
     API_KEY, 
     CLICK_THRESHOLD,
@@ -59,7 +60,7 @@
   onMount(() => {
     map = new Map({
       container,
-      style: `https://api.maptiler.com/maps/${STYLE}/style.json?key=${API_KEY}`,
+      style: getStyle('dare'),
       center: [ DEFAULT_LON, DEFAULT_LAT ],
       zoom: DEFAULT_ZOOM,
       bounds: getBounds(results), // Bounds override center and zoom if defined
