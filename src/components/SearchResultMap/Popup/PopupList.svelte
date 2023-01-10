@@ -105,8 +105,8 @@
       on:pointerleave={onPointerLeave}>
 
       <PopupCard
-        delay={idx < topIdx ? 0 : 120 - 50 * (idx - topIdx)}
-        item={item} />
+        item={item}
+        delay={idx < topIdx ? 0 : 120 - 50 * (idx - topIdx)} />
     </div>
   {/each}
 

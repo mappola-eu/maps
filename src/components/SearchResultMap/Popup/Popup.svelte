@@ -73,13 +73,19 @@
     class="mappola-popup-container"
     style={`bottom: ${bottom + 20}px; left: ${left - 120}px;`}>
 
-    {#if (results.length === 1)}
+    {#if (results.length < 4)}
       <div class="wrapper">
-        <PopupCard item={results[0]}/>
+        {#each results as result, idx}
+          <div class="no-scroll">
+            <PopupCard 
+              item={result}
+              delay={results.length === 1 ? 0 : 150 - 50 * idx} />
+          </div>
+        {/each}
 
         <div 
           class="mappola-popup-controls single"
-          transition:fly={{ y: 50, duration: 120, easing: cubicOut }}>
+          transition:fly={{ y: 50, duration: 120, delay: (results.length - 1) * 50, easing: cubicOut }}>
 
           <button on:click={() => dispatch('close')}>
             <Icon src={CgClose} />
@@ -124,6 +130,10 @@
   .mappola-popup-container {
     position: absolute;
     pointer-events: none;
+  }
+
+  .no-scroll {
+    padding-bottom: 5px;
   }
 
   .mappola-popup-controls.single {
