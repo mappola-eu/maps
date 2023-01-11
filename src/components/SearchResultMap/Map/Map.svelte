@@ -5,6 +5,8 @@
   import { getBounds, toGeoJSON, EMPTY_GEOJSON } from './utils';
   import { pointStyle, selectionStyle } from '../../styles';
   import { getStyle } from '../../baselayers';
+  import LayerSwitcherControl from '../../LayerSwitcherControl';
+  
   import { 
     CLICK_THRESHOLD,
     DEFAULT_LAT,
@@ -66,6 +68,7 @@
     });
 
     map.addControl(new NavigationControl(), 'top-right');
+    map.addControl(new LayerSwitcherControl(), 'top-right');
 
     map.on('click', onMapClicked);
 
