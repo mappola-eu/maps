@@ -76,7 +76,10 @@
       }];
 
       window.onload = function() {
-        var m = new SearchResultMap(document.getElementById('root'), results);
+        var m = new SearchResultMap({
+          parent: document.getElementById('root'), 
+          results
+        });
       }
     </script>
   </body>

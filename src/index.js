@@ -1,13 +1,27 @@
 import SvelteSearchResultMap from './components/SearchResultMap';
 import SvelteProfileMap from './components/ProfileMap';
 
+const isValidConfig = config => {
+  if (!config.parent)
+    console.error('Missing property \'parent\' in ProfileMap config');
+
+  if (!config.parent.nodeType)
+    console.error('ProfileMap parent must be a DOM node');
+
+  return Boolean(config?.parent?.nodeType);
+}
+
 export class SearchResultMap {
 
-  constructor(container, results = []) {
-    this.map = new SvelteSearchResultMap({
-      target: container,
-      props: { results }
-    });
+  constructor(config) {
+    if (isValidConfig(config)) {
+      const { parent, ...rest } = config;
+
+      this.map = new SvelteSearchResultMap({
+        target: config.parent,
+        props: { ...rest }
+      });
+    }
   }
 
   setResults = results =>
@@ -18,18 +32,14 @@ export class SearchResultMap {
 export class ProfileMap {
 
   constructor(config) {
-    if (!config.parent)
-      console.error('Missing property \'parent\' in ProfileMap config');
+    if (isValidConfig(config)) {
+      const { parent, ...rest } = config;
 
-    if (!config.parent.nodeType)
-      console.error('ProfileMap parent must be a DOM node');    
-
-    const { parent, ...rest } = config;
-
-    this.map = new SvelteProfileMap({
-      target: config.parent,
-      props: { ...rest }
-    });
+      this.map = new SvelteProfileMap({
+        target: config.parent,
+        props: { ...rest }
+      });
+    }
   }
 
 }
