@@ -4,6 +4,13 @@
 
   export let delay = 0;
 
+  /**
+   * Item is supposed to contain:
+   * - Inscription title
+   * - Thumbnail URL
+   * - Text preview snippet
+   * - Mappola ID (for the link to the DB)
+   */
   export let item;
 </script>
 
