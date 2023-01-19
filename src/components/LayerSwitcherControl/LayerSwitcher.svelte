@@ -16,7 +16,7 @@
   const onSelect = style => () => {
     selected = style;
     isMenuOpen = false;
-    map.setStyle(getStyle(style));
+    // map.setStyle(getStyle(style));
   }
 
   onMount(() => {

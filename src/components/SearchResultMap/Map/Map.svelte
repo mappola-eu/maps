@@ -50,12 +50,16 @@
     });
   }
 
+  const onZoomEnd = evt => {
+    map?.getSource('results-source')?.setData(toGeoJSON(results, map));
+  }
+
   const onClosePopup = () => {
     selectedFeature = null;
     map.getSource('selection-source').setData(EMPTY_GEOJSON);
   }
 
-  $: map?.getSource('results-source')?.setData(toGeoJSON(results));
+  $: map?.getSource('results-source')?.setData(toGeoJSON(results, map));
 
   onMount(() => {
     map = new Map({
@@ -71,11 +75,13 @@
     map.addControl(new LayerSwitcherControl(), 'top-right');
 
     map.on('click', onMapClicked);
+    
+    map.on('zoom', onZoomEnd);
 
     map.on('load', () => {
       map.addSource('selection-source', {
         type: 'geojson',
-        data: toGeoJSON([])
+        data: toGeoJSON([], map)
       });
 
       map.addLayer({
@@ -86,7 +92,7 @@
 
       map.addSource('results-source', { 
         type: 'geojson',
-        data: toGeoJSON(results)
+        data: toGeoJSON(results, map)
       });
 
       map.addLayer({
