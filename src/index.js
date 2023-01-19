@@ -11,21 +11,27 @@ const isValidConfig = config => {
   return Boolean(config?.parent?.nodeType);
 }
 
+const filterResults = results => 
+  results.filter(record => 
+    record.coords?.length === 2 && (record.coords[0] && record.coords[1]));
+
 export class SearchResultMap {
 
   constructor(config) {
     if (isValidConfig(config)) {
-      const { parent, ...rest } = config;
+      const { parent, results, ...rest } = config;
+      
+      const filteredResults = results ? filterResults(results) : null;
 
       this.map = new SvelteSearchResultMap({
         target: config.parent,
-        props: { ...rest }
+        props: { results: filteredResults, ...rest }
       });
     }
   }
 
   setResults = results =>
-    this.map.$set({ results });
+    this.map.$set({ results: filterResults(results) });
 
 }
 

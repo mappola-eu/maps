@@ -60,7 +60,7 @@
   onMount(() => {
     map = new Map({
       container,
-      style: getStyle('dare'),
+      style: getStyle('maptiler'),
       center: [ DEFAULT_LON, DEFAULT_LAT ],
       zoom: DEFAULT_ZOOM,
       bounds: getBounds(results), // Bounds override center and zoom if defined

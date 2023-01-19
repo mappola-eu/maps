@@ -6,7 +6,7 @@ const toFeature = result => ({
   },
   geometry: {
     type: 'Point',
-    coordinates: result.lonlat
+    coordinates: result.coords.slice().reverse()
   }
 });
 
@@ -19,7 +19,7 @@ export const toGeoJSON = (results, precision = 5) => {
   const grouped = {};
 
   results.forEach(result => {
-    const [lon, lat] = result.lonlat;
+    const [lat, lon] = result.coords;
     const key = lon.toFixed(precision) + ',' + lat.toFixed(precision);
 
     const feature = grouped[key];
@@ -47,8 +47,8 @@ export const getBounds = results => {
   let maxLat = - Infinity;
   let maxLon = - Infinity;
 
-  results.forEach(({ lonlat }) => {
-    const [lon, lat] = lonlat;
+  results.forEach(({ coords }) => {
+    const [lat, lon] = coords;
 
     if (lon < minLon)
       minLon = lon;

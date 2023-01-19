@@ -22,7 +22,7 @@
     <script type="module">
       import { SearchResultMap } from '../src/index.js';
 
-      // A list of (dummy) search results
+      /* A list of (dummy) search results
       var results = [{
         id: '123',
         title: 'Result 1',
@@ -74,8 +74,11 @@
         lonlat: [ 13.26, 38.02 ],
         thumbnail: '/images/133_thumb.jpg'
       }];
+      */
 
-      window.onload = function() {
+      window.onload = async function() {
+        const results = await fetch('sample-20230119.json').then(res => res.json());
+        
         var m = new SearchResultMap({
           parent: document.getElementById('root'), 
           results
