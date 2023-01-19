@@ -7,8 +7,17 @@ export default defineConfig({
     open: '/test/index.html'
   },
   build: {
+    sourcemap: true,
+    lib: {
+      entry: './src/index.js',
+      name: 'Mappola',
+      formats: ['umd'],
+      fileName: () => 'mappola-maps.js',
+    },
     rollupOptions: {
-      input: './test/index.html'
+      output: {
+        assetFileNames: 'mappola-maps.[ext]'
+      }
     }
   }
 });

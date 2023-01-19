@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Mappola | Test Page</title>
+    
+    <style>
+      html, body, #root {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+      }
+    </style>
+    <script src="mappola-maps.js"></script>
+    <link rel="stylesheet" href="mappola-maps.css">
+  </head>
+
+  <body>
+    <div id="root">
+      <!-- We'll mount the maphere -->
+    </div>
+
+    <script>
+      window.onload = async function() {
+        const results = await fetch('sample-20230119.json').then(res => res.json());
+        
+        var m = new Mappola.SearchResultMap({
+          parent: document.getElementById('root'), 
+          results: results
+        });
+      }
+    </script>
+  </body>
+</html>
