@@ -46,7 +46,7 @@
 
     map.getSource('selection-source').setData({
       type: 'FeatureCollection',
-      features: [ selectedFeatures[0] ]
+      features: selectedFeature ? [ selectedFeature ] : []
     });
   }
 
