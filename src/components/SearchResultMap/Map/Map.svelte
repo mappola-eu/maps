@@ -46,7 +46,7 @@
 
     map.getSource('selection-source').setData({
       type: 'FeatureCollection',
-      features: selectedFeatures
+      features: [ selectedFeatures[0] ]
     });
   }
 
@@ -76,7 +76,7 @@
 
     map.on('click', onMapClicked);
     
-    map.on('zoom', onZoomEnd);
+    map.on('zoomend', onZoomEnd);
 
     map.on('load', () => {
       map.addSource('selection-source', {
