@@ -1,6 +1,8 @@
 <script>
   import { fly } from 'svelte/transition';
   import { cubicOut } from 'svelte/easing';
+  import Icon from 'svelte-icons-pack/Icon.svelte';
+  import BsBodyText from 'svelte-icons-pack/bs/BsBodyText';
 
   export let delay = 0;
 
@@ -18,7 +20,11 @@
   class="mappola-popup-card" 
   in:fly="{{ y: 50, duration: 120, easing: cubicOut, delay }}"
   out:fly="{{ y: 50, duration: 120, easing: cubicOut, delay: delay ? 120 - delay : 0 }}">
+  <div class="thumbnail">
+    <Icon src={BsBodyText} />
+  </div>
   <p>{item.title}</p>
+  <p>{item.text}</p>
   <p><a href="#dummy">Link</a></p>
 </div>
 
@@ -28,9 +34,9 @@
     border-radius: 3px;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.15), 0 12px 12px -8px rgba(0, 0, 0, 0.2);
     box-sizing: border-box;
-    height: 60px;
+    height: 90px;
     padding: 10px;
-    width: 240px;
+    width: 300px;
     pointer-events: auto;
   
     /** Temporary **/
