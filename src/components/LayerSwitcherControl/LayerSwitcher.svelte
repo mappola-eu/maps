@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from 'svelte';
+  import { onMount, createEventDispatcher } from 'svelte';
   import Icon from 'svelte-icons-pack/Icon.svelte';
   import IoLayers from 'svelte-icons-pack/io/IoLayers';
   import FiCheck from 'svelte-icons-pack/fi/FiCheck';
@@ -7,16 +7,21 @@
   import { cubicOut } from 'svelte/easing';
   import { getStyle } from '../baselayers';
 
+  const dispatch = createEventDispatcher();
+
   export let map;
 
   let isMenuOpen = false;
 
-  let selected = 'dare'; 
+  let selected = 'maptiler'; 
 
   const onSelect = style => () => {
     selected = style;
     isMenuOpen = false;
-    // map.setStyle(getStyle(style));
+
+    map.once('styledata', () => dispatch('change'));
+
+    map.setStyle(getStyle(style));
   }
 
   onMount(() => {

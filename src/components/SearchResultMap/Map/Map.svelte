@@ -1,6 +1,6 @@
 <script>
   import { onMount, onDestroy } from 'svelte';
-  import { Map, NavigationControl } from 'maplibre-gl';
+  import { Map, MapMouseEvent, NavigationControl } from 'maplibre-gl';
   import Popup from '../Popup/Popup.svelte';
   import { getBounds, toGeoJSON, EMPTY_GEOJSON } from './utils';
   import { pointStyle, selectionStyle } from '../../styles';
@@ -61,6 +61,31 @@
 
   $: map?.getSource('results-source')?.setData(toGeoJSON(results, map));
 
+  // Adds result and selection data to map
+  const addData = () => {
+    map.addSource('selection-source', {
+      type: 'geojson',
+      data: toGeoJSON(selectedFeature ? [ selectedFeature ] : [], map)
+    });
+
+    map.addLayer({
+      ...selectionStyle,
+      id: 'selection',
+      source: 'selection-source'
+    });
+
+    map.addSource('results-source', { 
+      type: 'geojson',
+      data: toGeoJSON(results, map)
+    });
+
+    map.addLayer({
+      ...pointStyle,
+      id: 'results',
+      source: 'results-source'
+    });    
+  }
+
   onMount(() => {
     map = new Map({
       container,
@@ -72,35 +97,15 @@
     });
 
     map.addControl(new NavigationControl(), 'top-right');
-    map.addControl(new LayerSwitcherControl(), 'top-right');
+
+    // Note that MapLibre destroys custom layers when switching style!
+    map.addControl(new LayerSwitcherControl({ onChange: addData }), 'top-right');
 
     map.on('click', onMapClicked);
     
     map.on('zoomend', onZoomEnd);
 
-    map.on('load', () => {
-      map.addSource('selection-source', {
-        type: 'geojson',
-        data: toGeoJSON([], map)
-      });
-
-      map.addLayer({
-        ...selectionStyle,
-        id: 'selection',
-        source: 'selection-source'
-      });
-
-      map.addSource('results-source', { 
-        type: 'geojson',
-        data: toGeoJSON(results, map)
-      });
-
-      map.addLayer({
-        ...pointStyle,
-        id: 'results',
-        source: 'results-source'
-      });
-    });
+    map.on('load', addData);
   });
 
   onDestroy(() => map.remove());

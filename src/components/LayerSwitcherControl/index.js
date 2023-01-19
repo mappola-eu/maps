@@ -2,6 +2,10 @@ import LayerSwitcher from './LayerSwitcher.svelte';
 
 export default class LayerSwitcherControl {
 
+  constructor(callbacks) {
+    this.callbacks = callbacks || {};
+  }
+
   onAdd(map) {
     this._map = map;
     this._container = document.createElement('div');
@@ -11,6 +15,9 @@ export default class LayerSwitcherControl {
       target: this._container,
       props: { map }
     });
+
+    this.control.$on('change', () => 
+      this.callbacks.onChange && this.callbacks.onChange());
     
     return this._container;
   }
