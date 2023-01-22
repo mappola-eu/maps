@@ -45,6 +45,7 @@
     pointer-events: auto;
     font-size: 13px;
     color: #472a2d;
+    transition: all 0.01s;
   }
 
   .mappola-popup-card aside {

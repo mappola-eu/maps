@@ -7,10 +7,10 @@
   let container;
 
   // Size when entering/leaving
-  const MIN_SCALE = 0.9;
+  const MIN_SCALE = 0.92;
 
   // Vertical offset when entering/leaving
-  const MAX_DY = 18;
+  const MAX_DY = 40;
 
   // Pixel increment for one scroll step
   const SCROLL_STEP = 90;
@@ -45,9 +45,9 @@
         const scale = ratio * (1 - MIN_SCALE) + MIN_SCALE;
 
         // Vertical offset
-        const dy = MAX_DY - ratio * MAX_DY;
+        const dy = MAX_DY - Math.sqrt(ratio) * MAX_DY;
         style.transform = `scale(${scale}) translateY(${isExiting ? dy : -dy}px)`;
-
+        
         if (ratio > 0.9)
           style.zIndex = 1;
         else
@@ -73,7 +73,7 @@
     const options = {
       root: container,
       rootMargin: '0px',
-      threshold: Array.from({ length: 101 }, (v, i) => i * 0.01)
+      threshold: Array.from({ length: 51 }, (v, i) => i * 0.02)
     }
 
     const observer = new IntersectionObserver(callback, options);
@@ -109,7 +109,7 @@
     position: relative;
     height: 500px;
     box-sizing: border-box;
-    padding: 90px 10px;
+    padding: 100px 10px;
     margin-bottom: -30px;
     pointer-events: auto;
 
