@@ -14,18 +14,24 @@
    * - Mappola ID (for the link to the DB)
    */
   export let item;
+
+  console.log(item);
 </script>
 
 <div 
   class="mappola-popup-card" 
   in:fly="{{ y: 50, duration: 120, easing: cubicOut, delay }}"
   out:fly="{{ y: 50, duration: 120, easing: cubicOut, delay: delay ? 120 - delay : 0 }}">
-  <div class="thumbnail">
+
+  <aside class="thumbnail">
     <Icon src={BsBodyText} />
-  </div>
-  <p>{item.title}</p>
-  <p>{item.text}</p>
-  <p><a href="#dummy">Link</a></p>
+  </aside>
+
+  <main>
+    <h3>{item.title}</h3>
+    <p class="text">{item.text}</p>
+    <a href="#dummy">{item.long_id}</a>
+  </main>
 </div>
 
 <style>
@@ -35,24 +41,50 @@
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.15), 0 12px 12px -8px rgba(0, 0, 0, 0.2);
     box-sizing: border-box;
     height: 90px;
-    padding: 10px;
-    width: 300px;
+    padding: 6px 6px 6px 80px;
+    width: 320px;
+    position: relative;
     pointer-events: auto;
-  
-    /** Temporary **/
-    font-size: 14px;
+    font-size: 13px;
+    color: #472a2d;
+  }
+
+  .mappola-popup-card aside {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 70px;
+    height: 100%;
+    background-color: #fe797c;
+    border-radius: 3px 0 0 3px;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
+    font-size: 50px;
+    color: #fff;
   }
 
-  .mappola-popup-card p {
+  .mappola-popup-card main {
+    overflow: hidden;
+  }
+
+  .mappola-popup-card main h3 {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
     margin: 0;
     padding: 0;
+    white-space: nowrap;
+    font-weight: 600;
   }
 
-  .mappola-popup-card a {
-    color: #6565e5;
+  .mappola-popup-card main p.text {
+    margin: 0;
+    padding: 0;
+    font-style: italic;
+  }
+
+  .mappola-popup-card main a {
+    color: #eb585b;
   }
 </style>
