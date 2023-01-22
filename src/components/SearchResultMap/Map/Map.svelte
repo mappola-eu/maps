@@ -1,6 +1,6 @@
 <script>
   import { onMount, onDestroy } from 'svelte';
-  import { Map, MapMouseEvent, NavigationControl } from 'maplibre-gl';
+  import { Map, NavigationControl } from 'maplibre-gl';
   import Popup from '../Popup/Popup.svelte';
   import { getBounds, toGeoJSON, EMPTY_GEOJSON } from './utils';
   import { pointStyle, selectionStyle } from '../../styles';
@@ -22,23 +22,37 @@
 
   let map; // MapLibre map instance
 
-  let selectedFeature = null;
+  let selection = null;
 
-  const getResultsAt = selectedFeature => {
-    /*
-    const ids = new Set(JSON.parse(selectedFeature.properties.results));
-    return results.filter(result => ids.has(result.id));
-    */
-
-    const clusterId = selectedFeature.properties.cluster_id;
-
-    const clusterSource = map.getSource('results-source');
-
-    const features = clusterSource.getClusterLeaves(clusterId, Infinity, 0, (error, features) => {
-      console.log(features);
+  const selectResultsAt = f => {
+    const setHalo = f => map.getSource('selection-source').setData({
+      type: 'FeatureCollection',
+      features: [ f ]
     });
 
-    return [];
+    const clusterId = f.properties.cluster_id;
+
+    if (clusterId) {
+      // This feature is a cluster
+      const clusterSource = map.getSource('results-source');
+
+      clusterSource.getClusterLeaves(clusterId, Infinity, 0, (error, features) => {
+        setHalo(f);
+
+        selection = {
+          feature: f, 
+          results: features.map(f => f.properties)
+        };
+      });
+    } else {
+      // This features is a single result
+      setHalo(f);
+
+      selection = {
+        feature: f,
+        results: [ f.properties ]
+      };
+    }
   }
 
   const onMapClicked = evt => {
@@ -51,23 +65,20 @@
       layers: ['results']
     });
 
-    if (selectedFeatures.length === 0)
-      selectedFeature = null;
-    else 
-      selectedFeature = selectedFeatures[0];
+    if (selectedFeatures.length === 0) {
+      selection = null;
 
-    map.getSource('selection-source').setData({
-      type: 'FeatureCollection',
-      features: selectedFeature ? [ selectedFeature ] : []
-    });
-  }
-
-  const onZoomEnd = evt => {
-    // map?.getSource('results-source')?.setData(toGeoJSON(results, map));
+      map.getSource('selection-source').setData({
+        type: 'FeatureCollection',
+        features: []
+      });
+    } else { 
+      selectResultsAt(selectedFeatures[0]);
+    }
   }
 
   const onClosePopup = () => {
-    selectedFeature = null;
+    selection = null;
     map.getSource('selection-source').setData(EMPTY_GEOJSON);
   }
 
@@ -77,7 +88,7 @@
   const addData = () => {
     map.addSource('selection-source', {
       type: 'geojson',
-      data: selectedFeature || EMPTY_GEOJSON
+      data: selection?.feature || EMPTY_GEOJSON
     });
 
     map.addLayer({
@@ -117,8 +128,6 @@
 
     map.on('click', onMapClicked);
     
-    map.on('zoomend', onZoomEnd);
-
     map.on('load', addData);
   });
 
@@ -126,12 +135,14 @@
 </script>
 
 <div class="map" bind:this={container}>
-  {#if selectedFeature}
+  {#if selection}
+    {#key JSON.stringify(selection)}
     <Popup 
-      selected={selectedFeature} 
-      results={getResultsAt(selectedFeature)}
+      selected={selection.feature} 
+      results={selection.results}
       map={map}
       on:close={onClosePopup} />
+    {/key}
   {/if}
 </div>
 

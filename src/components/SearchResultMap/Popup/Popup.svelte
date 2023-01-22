@@ -120,7 +120,7 @@
           </button>
 
           <span class="scroll-position">
-            {Math.round(results.length * scrollItem / 100 - 0.33) }/{results.length}
+            {Math.round(results.length * (scrollItem - 1) / 100) }/{results.length}
           </span>
 
           <button 

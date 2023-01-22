@@ -39,13 +39,13 @@
         if (isExiting && ratio < 0.9)
           topIdx = parseInt(entry.target.dataset.idx);
 
-        style.opacity = ratio; // Math.sqrt(ratio);
+        style.opacity = Math.sqrt(ratio);
 
         // Scale factor as a function of intersection ratio
         const scale = ratio * (1 - MIN_SCALE) + MIN_SCALE;
 
         // Vertical offset
-        const dy = MAX_DY - (ratio * MAX_DY);
+        const dy = MAX_DY - ratio * MAX_DY;
         style.transform = `scale(${scale}) translateY(${isExiting ? dy : -dy}px)`;
 
         if (ratio > 0.9)
@@ -73,7 +73,7 @@
     const options = {
       root: container,
       rootMargin: '0px',
-      threshold: Array.from({ length: 51 }, (v, i) => i * 0.02)
+      threshold: Array.from({ length: 101 }, (v, i) => i * 0.01)
     }
 
     const observer = new IntersectionObserver(callback, options);

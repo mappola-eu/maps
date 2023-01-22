@@ -1,8 +1,7 @@
 const toFeature = result => ({
   type: 'Feature',
   properties: {
-    count: 1,
-    results: [ result.id ]
+    ...result
   },
   geometry: {
     type: 'Point',
