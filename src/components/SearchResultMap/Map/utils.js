@@ -27,6 +27,7 @@ const metersPerPixel = function(latitude, zoom) {
  * are collapsed to a single point (clustering). 
  */
 export const toGeoJSON = (results, map, pixelDistance = 10) => {
+  /*
   const grouped = {};
 
   // Collapse everything with pixelDistance meters. Approximate, so we're faster
@@ -39,6 +40,7 @@ export const toGeoJSON = (results, map, pixelDistance = 10) => {
   // Cf. https://gis.stackexchange.com/questions/8650/measuring-accuracy-of-latitude-and-longitude
   const dimension = Math.round(Math.log10(threshold));
   const precision = Math.max(0, 5 - dimension);
+
 
   results.forEach(result => {
     const [lat, lon] = result.coords;
@@ -58,6 +60,12 @@ export const toGeoJSON = (results, map, pixelDistance = 10) => {
     type: 'FeatureCollection',
     features: Object.values(grouped)
   };
+  */
+
+  return {
+    type: 'FeatureCollection',
+    features: results.map(toFeature)
+  }
 }
 
 export const getBounds = results => {

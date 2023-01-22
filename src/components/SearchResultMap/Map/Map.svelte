@@ -25,8 +25,20 @@
   let selectedFeature = null;
 
   const getResultsAt = selectedFeature => {
+    /*
     const ids = new Set(JSON.parse(selectedFeature.properties.results));
     return results.filter(result => ids.has(result.id));
+    */
+
+    const clusterId = selectedFeature.properties.cluster_id;
+
+    const clusterSource = map.getSource('results-source');
+
+    const features = clusterSource.getClusterLeaves(clusterId, Infinity, 0, (error, features) => {
+      console.log(features);
+    });
+
+    return [];
   }
 
   const onMapClicked = evt => {
@@ -51,7 +63,7 @@
   }
 
   const onZoomEnd = evt => {
-    map?.getSource('results-source')?.setData(toGeoJSON(results, map));
+    // map?.getSource('results-source')?.setData(toGeoJSON(results, map));
   }
 
   const onClosePopup = () => {
@@ -76,7 +88,9 @@
 
     map.addSource('results-source', { 
       type: 'geojson',
-      data: toGeoJSON(results, map)
+      data: toGeoJSON(results, map),
+      cluster: true,
+      clusterRadius: 10
     });
 
     map.addLayer({

@@ -4,7 +4,7 @@ export const pointStyle = {
     'circle-radius': [
       'interpolate', 
       ['linear'],
-      ['number', ['get','count'], 1 ],
+      ['number', ['get','point_count'], 1 ],
       0, 4, 
       10, 18
     ],
@@ -20,7 +20,7 @@ export const selectionStyle = {
     'circle-radius': [
       'interpolate', 
       ['linear'],
-      ['number', ['get','count'], 1 ],
+      ['number', ['get','point_count'], 1 ],
       0, 20, 
       10, 38
     ],
