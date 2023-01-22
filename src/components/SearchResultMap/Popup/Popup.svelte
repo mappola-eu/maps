@@ -32,7 +32,12 @@
 
   const dispatch = createEventDispatcher();
 
-  $: updatePosition(selected);
+  $: {
+    updatePosition(selected);
+  
+    if (el)
+      moveIntoView(map, el.getBoundingClientRect());
+  }
 
   const updatePosition = selected => {
     // Selected marker lon/lat
@@ -71,7 +76,7 @@
   <div 
     bind:this={el}
     class="mappola-popup-container"
-    style={`bottom: ${bottom + 20}px; left: ${left - 120}px;`}>
+    style={`bottom: ${bottom + 20}px; left: ${left - 160}px;`}>
 
     {#if (results.length < 4)}
       <div class="wrapper">
@@ -147,7 +152,7 @@
 
   .mappola-popup-controls.single {
     position: absolute;
-    top: 9px;
+    top: 2px;
     right: -45px;
     pointer-events: auto;
   }
@@ -155,8 +160,8 @@
   .mappola-popup-controls.right {
     padding: 3px 0;
     position: absolute;
-    top: 60px;
-    left: 260px;
+    top: 90px;
+    left: 340px;
     display: flex;
     flex-direction: column;
     pointer-events: auto;

@@ -65,7 +65,7 @@
   const addData = () => {
     map.addSource('selection-source', {
       type: 'geojson',
-      data: toGeoJSON(selectedFeature ? [ selectedFeature ] : [], map)
+      data: selectedFeature || EMPTY_GEOJSON
     });
 
     map.addLayer({

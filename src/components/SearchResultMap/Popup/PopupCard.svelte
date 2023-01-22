@@ -14,8 +14,6 @@
    * - Mappola ID (for the link to the DB)
    */
   export let item;
-
-  console.log(item);
 </script>
 
 <div 
@@ -36,7 +34,7 @@
 
 <style>
   .mappola-popup-card {
-    background-color: #fff;
+    background-color: #fff; /* #f2edea; */
     border-radius: 3px;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.15), 0 12px 12px -8px rgba(0, 0, 0, 0.2);
     box-sizing: border-box;
@@ -55,7 +53,7 @@
     left: 0;
     width: 70px;
     height: 100%;
-    background-color: #fe797c;
+    background-color: #472a2d;
     border-radius: 3px 0 0 3px;
     display: flex;
     justify-content: center;
