@@ -25,6 +25,8 @@
   // Bound from PopupList
   let scrollBy; 
 
+  let scrollItem = 3;
+
   // Scroll button states
   let isUpDisabled = true;  
   
@@ -57,6 +59,8 @@
   const onListScrolled = evt => {
     const { from, to } = evt.detail;
     
+    scrollItem = to;
+
     isUpDisabled = from === 0;
     isDownDisabled = to === 100;
   }
@@ -106,14 +110,6 @@
           on:scroll={onListScrolled}>
         </PopupList>
 
-        <!-- div 
-          class="mappola-popup-controls left">
-          
-          <p class="count">
-            {results.length} Results
-          </p>
-        </div -->
-
         <div 
           class="mappola-popup-controls right"
           in:fade={{ duration: 200, delay: 170 }}
@@ -122,6 +118,10 @@
           <button on:click={() => dispatch('close')}>
             <Icon src={CgClose} />
           </button>
+
+          <span class="scroll-position">
+            {Math.round(results.length * scrollItem / 100 - 0.33) }/{results.length}
+          </span>
 
           <button 
             disabled={isUpDisabled}
@@ -141,59 +141,55 @@
 {/key}
 
 <style>
+  :root {
+    --dark-brown: #472a2d;
+  }
+
   .mappola-popup-container {
     position: absolute;
     pointer-events: none;
   }
 
+  .wrapper {
+    padding-right: 45px;
+  }
+
   .no-scroll {
-    padding-bottom: 5px;
+    padding-bottom: 8px;
   }
 
   .mappola-popup-controls.single {
     position: absolute;
     top: 2px;
-    right: -45px;
+    right: 0;
     pointer-events: auto;
   }
 
   .mappola-popup-controls.right {
-    padding: 3px 0;
     position: absolute;
     top: 90px;
     left: 340px;
     display: flex;
     flex-direction: column;
     pointer-events: auto;
+    background-color: var(--dark-brown);
+    box-shadow: 0 0 8px rgb(0 0 0 / 15%), 0 12px 12px -8px rgb(0 0 0 / 20%);
+    border-radius: 23px;
+    padding: 5px;
   }
 
-  /*
-  .mappola-popup-controls.left {
-    position:absolute;
-    right: 265px;
-    top: 60px;
+  .mappola-popup-controls .scroll-position {
+    text-align: center;
+    font-weight: 600;
+    color: #fff;
+    padding: 4px 0;
   }
-
-  .mappola-popup-controls.left p {
-    white-space: nowrap;
-    background-color: #fff;
-    border-radius: 18px;
-    height: 36px;
-    padding: 0 18px;
-    font-size: 15px;
-    font-weight: 6;
-    line-height: 37px;
-    margin: 5px 0;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.15), 0 12px 12px -8px rgba(0, 0, 0, 0.2);
-  }
-  */
 
   .mappola-popup-controls button {
     align-items: center;
     background-color: #472a2d;
     border: none;
     border-radius: 50%;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.15), 0 12px 12px -8px rgba(0, 0, 0, 0.2);
     color: #fff;
     cursor: pointer;
     display: flex;
@@ -211,7 +207,14 @@
   } 
 
   .mappola-popup-controls button:disabled {
-    background-color: #9f9596;
-    color: #c6c3c3;
+    color: #ffffff4f;
+  }
+
+  .mappola-popup-controls button:first-child {
+    margin-top: 0;
+  }
+
+  .mappola-popup-controls button:last-child {
+    margin-bottom: 0;
   }
 </style>

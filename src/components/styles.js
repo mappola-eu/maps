@@ -21,8 +21,8 @@ export const selectionStyle = {
       'interpolate', 
       ['linear'],
       ['number', ['get','count'], 1 ],
-      0, 16, 
-      10, 34
+      0, 20, 
+      10, 38
     ],
     'circle-color': '#eb585b',
     'circle-opacity': 0.35,

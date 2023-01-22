@@ -34,12 +34,12 @@
 
 <style>
   .mappola-popup-card {
-    background-color: #fff; /* #f2edea; */
+    background-color: #fff;
     border-radius: 3px;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.15), 0 12px 12px -8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 16px rgba(0, 0, 0, 0.25), 0 12px 12px -12px rgba(0, 0, 0, 0.2);
     box-sizing: border-box;
-    height: 90px;
-    padding: 6px 6px 6px 80px;
+    height: 96px;
+    padding: 8px 14px 8px 82px;
     width: 320px;
     position: relative;
     pointer-events: auto;

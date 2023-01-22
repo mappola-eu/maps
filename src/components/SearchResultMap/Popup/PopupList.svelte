@@ -39,7 +39,7 @@
         if (isExiting && ratio < 0.9)
           topIdx = parseInt(entry.target.dataset.idx);
 
-        style.opacity = Math.sqrt(ratio);
+        style.opacity = ratio; // Math.sqrt(ratio);
 
         // Scale factor as a function of intersection ratio
         const scale = ratio * (1 - MIN_SCALE) + MIN_SCALE;
@@ -107,7 +107,7 @@
   .endless-list-container {
     overflow-y: scroll;
     position: relative;
-    height: 470px;
+    height: 500px;
     box-sizing: border-box;
     padding: 90px 10px;
     margin-bottom: -30px;
@@ -125,6 +125,7 @@
     position: relative;
     transition: opacity 0.2s;
     pointer-events: auto;
-    padding-bottom: 5px;
+    padding-bottom: 8px;
+    opacity: 0;
   }
 </style>
