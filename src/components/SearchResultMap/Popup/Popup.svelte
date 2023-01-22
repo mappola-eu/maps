@@ -165,6 +165,10 @@
     pointer-events: auto;
   }
 
+  .mappola-popup-controls.single button {
+    box-shadow: 0 0 8px rgb(0 0 0 / 15%), 0 12px 12px -8px rgb(0 0 0 / 20%);
+  }
+
   .mappola-popup-controls.right {
     position: absolute;
     top: 90px;
