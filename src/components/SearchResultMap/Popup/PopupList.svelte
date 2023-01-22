@@ -7,10 +7,10 @@
   let container;
 
   // Size when entering/leaving
-  const MIN_SCALE = 0.92;
+  const MIN_SCALE = 0.88;
 
   // Vertical offset when entering/leaving
-  const MAX_DY = 40;
+  const MAX_DY = 50;
 
   // Pixel increment for one scroll step
   const SCROLL_STEP = 90;
@@ -44,9 +44,11 @@
         // Scale factor as a function of intersection ratio
         const scale = ratio * (1 - MIN_SCALE) + MIN_SCALE;
 
+        const rotate = isExiting ? 5 * (1- ratio) : - 5 * (1- ratio);
+
         // Vertical offset
         const dy = MAX_DY - Math.sqrt(ratio) * MAX_DY;
-        style.transform = `scale(${scale}) translateY(${isExiting ? dy : -dy}px)`;
+        style.transform = `scale(${scale}) perspective(500px) rotateX(${rotate}deg) translateY(${isExiting ? dy : -dy}px)`;
         
         if (ratio > 0.9)
           style.zIndex = 1;
@@ -67,6 +69,22 @@
   const onPointerDown = evt => {
     if (evt.target === container)
       dispatch('close');
+  }
+
+  const onClickCard = evt => {
+    const item = evt.target.closest('.endless-list-item');
+    const { opacity } = item.style;
+
+    if (opacity < 0.99) {
+      const bounds = item.getBoundingClientRect();
+      
+      const isEntering = item.offsetTop - item.parentElement.scrollTop > bounds.height;
+
+      if (isEntering)
+        scrollBy(2);
+      else 
+        scrollBy(-2);
+    }
   }
 
   onMount(() => {
@@ -93,7 +111,8 @@
   {#each items as item, idx}
     <div 
       class="endless-list-item" 
-      data-idx={idx}>
+      data-idx={idx}
+      on:pointerdown={onClickCard}>
 
       <PopupCard
         item={item}
@@ -107,7 +126,7 @@
   .endless-list-container {
     overflow-y: scroll;
     position: relative;
-    height: 500px;
+    height: 520px;
     box-sizing: border-box;
     padding: 100px 10px;
     margin-bottom: -30px;
