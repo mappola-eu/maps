@@ -25,11 +25,11 @@
     <Icon src={BsBodyText} />
   </aside>
 
-  <main>
-    <h3>{item.title}</h3>
+  <section>
+    <h1>{item.title}</h1>
     <p class="text">{item.text}</p>
     <a href="#dummy">{item.long_id}</a>
-  </main>
+  </section>
 </div>
 
 <style>
@@ -63,23 +63,25 @@
     color: #fff;
   }
 
-  .mappola-popup-card main {
+  .mappola-popup-card section {
     overflow: hidden;
   }
 
-  .mappola-popup-card main h3 {
+  .mappola-popup-card section h1 {
     display: block;
     overflow: hidden;
     text-overflow: ellipsis;
     margin: 0;
     padding: 0;
     white-space: nowrap;
+    font-size: 15px;
     font-weight: 600;
   }
 
-  .mappola-popup-card main p.text {
+  .mappola-popup-card section p.text {
     margin: 0;
     padding: 0;
+    font-size: 14px;
     font-style: italic;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -87,7 +89,7 @@
     overflow: hidden;
   }
 
-  .mappola-popup-card main a {
+  .mappola-popup-card section a {
     color: #eb585b;
   }
 </style>

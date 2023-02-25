@@ -6,6 +6,7 @@
   import { pointStyle, selectionStyle } from '../../styles';
   import { getStyle } from '../../baselayers';
   import LayerSwitcherControl from '../../LayerSwitcherControl';
+  import HoverTooltip from '../HoverTooltip/HoverTooltip.svelte';
   
   import { 
     CLICK_THRESHOLD,
@@ -15,7 +16,6 @@
   } from '../../../config';
 
   import 'maplibre-gl/dist/maplibre-gl.css';
-    import HoverTooltip from '../HoverTooltip/HoverTooltip.svelte';
 
   export let results;
 
@@ -89,6 +89,8 @@
         features: []
       });
     } else { 
+      hovered = null;
+
       selectResultsAt(selectedFeatures[0]);
     }
   }
@@ -168,10 +170,12 @@
   {/if}
 </div>
 
+
 <style>
   .map {
     width: 100%;
     height: 100%;
-    font-family: Lato, Roboto, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+    font-size: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
   }
 </style>

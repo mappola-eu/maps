@@ -148,6 +148,7 @@
   .mappola-popup-container {
     position: absolute;
     pointer-events: none;
+    z-index: 2;
   }
 
   .wrapper {
@@ -184,6 +185,7 @@
 
   .mappola-popup-controls .scroll-position {
     text-align: center;
+    font-size: 12px;
     font-weight: 600;
     color: #fff;
     padding: 4px 0;
