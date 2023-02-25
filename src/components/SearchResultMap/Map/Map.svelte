@@ -15,6 +15,7 @@
   } from '../../../config';
 
   import 'maplibre-gl/dist/maplibre-gl.css';
+    import HoverTooltip from '../HoverTooltip/HoverTooltip.svelte';
 
   export let results;
 
@@ -24,12 +25,9 @@
 
   let selection = null;
 
-  const selectResultsAt = f => {
-    const setHalo = f => map.getSource('selection-source').setData({
-      type: 'FeatureCollection',
-      features: [ f ]
-    });
+  let hovered = null;
 
+  const getResultsAt = f => new Promise(resolve => {
     const clusterId = f.properties.cluster_id;
 
     if (clusterId) {
@@ -37,21 +35,39 @@
       const clusterSource = map.getSource('results-source');
 
       clusterSource.getClusterLeaves(clusterId, Infinity, 0, (error, features) => {
-        setHalo(f);
-
-        selection = {
-          feature: f, 
-          results: features.map(f => f.properties)
-        };
+        resolve(features.map(f => f.properties));
       });
     } else {
       // This features is a single result
-      setHalo(f);
+      resolve([ f.properties ]);
+    }
+  });
 
-      selection = {
-        feature: f,
-        results: [ f.properties ]
-      };
+  const selectResultsAt = f => {
+    const setHalo = f => map.getSource('selection-source').setData({
+      type: 'FeatureCollection',
+      features: [ f ]
+    });
+
+    getResultsAt(f).then(results => {
+      setHalo(f);
+      selection = { feature: f, results };
+    });
+  }
+
+  const onMouseMove = evt => {
+    const { clientX, clientY } = evt.originalEvent;
+
+    const features = map.queryRenderedFeatures(evt.point, {
+      layers: [ 'results' ]
+    });
+
+    if (features.length > 0) {
+      getResultsAt(features[0]).then(results => hovered = {
+        clientX, clientY, results
+      });      
+    } else {
+      hovered = null;
     }
   }
 
@@ -125,6 +141,8 @@
 
     // Note that MapLibre destroys custom layers when switching style!
     map.addControl(new LayerSwitcherControl({ onChange: addData }), 'top-right');
+    
+    map.on('mousemove', onMouseMove);
 
     map.on('click', onMapClicked);
     
@@ -143,6 +161,10 @@
       map={map}
       on:close={onClosePopup} />
     {/key}
+  {/if}
+
+  {#if hovered}
+    <HoverTooltip {...hovered} />
   {/if}
 </div>
 
