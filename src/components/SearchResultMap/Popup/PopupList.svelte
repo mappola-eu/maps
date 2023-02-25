@@ -126,9 +126,9 @@
   .endless-list-container {
     overflow-y: scroll;
     position: relative;
-    height: 520px;
+    height: 590px;
     box-sizing: border-box;
-    padding: 100px 10px;
+    padding: 110px 10px;
     margin-bottom: -30px;
     pointer-events: auto;
 

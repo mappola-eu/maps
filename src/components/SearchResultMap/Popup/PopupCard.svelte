@@ -38,7 +38,7 @@
     border-radius: 3px;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.25), 0 12px 12px -8px rgba(0, 0, 0, 0.2);
     box-sizing: border-box;
-    height: 96px;
+    height: 114px;
     padding: 8px 14px 8px 82px;
     width: 320px;
     position: relative;
@@ -68,22 +68,22 @@
   }
 
   .mappola-popup-card section h1 {
-    display: block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin: 0;
-    padding: 0;
-    white-space: nowrap;
+    display: -webkit-box;
     font-size: 15px;
     font-weight: 600;
+    margin: 0;
+    padding: 0;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;  
+    overflow: hidden;
   }
 
   .mappola-popup-card section p.text {
-    margin: 0;
-    padding: 0;
+    display: -webkit-box;
     font-size: 14px;
     font-style: italic;
-    display: -webkit-box;
+    margin: 0;
+    padding: 0;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;  
     overflow: hidden;

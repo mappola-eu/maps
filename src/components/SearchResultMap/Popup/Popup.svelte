@@ -172,7 +172,7 @@
 
   .mappola-popup-controls.right {
     position: absolute;
-    top: 100px;
+    top: 110px;
     left: 340px;
     display: flex;
     flex-direction: column;
