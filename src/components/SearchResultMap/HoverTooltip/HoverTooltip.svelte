@@ -9,15 +9,26 @@
 
   const OFFSET_Y = 10;
 
-  const getMostFrequentPlace = results => {
-    return 'Foo';
+  const getMostFrequentPlace = r => {
+    const places = r.map(result => result.place);
+
+    const frequency = places.reduce((stats, placename) => {
+      stats[placename] = (stats[placename] || 0) + 1;
+      return stats;
+    }, {});
+
+    return Object.keys(frequency).reduce((mostFrequent, placename) => {
+      return frequency[placename] > frequency[mostFrequent] ? placename : mostFrequent;
+    });
   }
+
+  $: mostFrequentPlace = getMostFrequentPlace(results);
 </script>
 
 <div 
   class="mappola-hover-tooltip" 
   style={`top: ${clientY + OFFSET_Y}px; left: ${clientX + OFFSET_X}px;`}>
-  <span class="placename">{getMostFrequentPlace(results)}</span>
+  <span class="placename">{mostFrequentPlace}</span>
   <span class="count">{results.length} Result{#if results.length > 1}s{/if}</span>
 </div>
 
