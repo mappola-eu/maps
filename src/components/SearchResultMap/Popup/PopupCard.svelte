@@ -22,13 +22,17 @@
   out:fly="{{ y: 50, duration: 120, easing: cubicOut, delay: delay ? 120 - delay : 0 }}">
 
   <aside class="thumbnail">
-    <Icon src={BsBodyText} />
+    {#if item.thumbnail_url}
+      <img src={item.thumbnail_url} alt={`${item.title} preview`} />
+    {:else}
+      <Icon src={BsBodyText} />
+    {/if}
   </aside>
 
   <section>
     <h1>{item.title}</h1>
     <p class="text">{item.text}</p>
-    <a href="#dummy">{item.long_id}</a>
+    <a href={item.item_url} target="_blank" rel="noreferrer">{item.long_id}</a>
   </section>
 </div>
 
@@ -61,6 +65,13 @@
     align-items: center;
     font-size: 50px;
     color: #fff;
+  }
+
+  .mappola-popup-card aside img {
+    border-radius: 3px 0 0 3px;
+    height: 100%;
+    object-fit: cover;
+    width: 100%; 
   }
 
   .mappola-popup-card section {
