@@ -1,10 +1,7 @@
-import { 
-  API_KEY, 
-  STYLE
-} from '../config';
+import { MAP_STYLE } from '../config';
 
 const STYLES = {
-  'maptiler': `https://api.maptiler.com/maps/${STYLE}/style.json?key=${API_KEY}`,
+  'maptiler': MAP_STYLE,
   'dare': {
     'version': 8,
     'sources': {
