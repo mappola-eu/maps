@@ -56,7 +56,7 @@
   }
 
   const onMouseMove = evt => {
-    const { clientX, clientY } = evt.originalEvent;
+    const { offsetX, offsetY } = evt.originalEvent;
 
     const features = map.queryRenderedFeatures(evt.point, {
       layers: [ 'results' ]
@@ -64,7 +64,7 @@
 
     if (features.length > 0) {
       getResultsAt(features[0]).then(results => hovered = {
-        clientX, clientY, results
+        offsetX, offsetY, results
       });      
     } else {
       hovered = null;
