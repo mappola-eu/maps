@@ -1,8 +1,13 @@
-export const API_KEY = import.meta.env.VITE_API_KEY;
+export const MAP_STYLE = 
+  document.querySelector('meta[name="map.style"]')?.getAttribute('content');
 
-export const STYLE = import.meta.env.VITE_STYLE;
-export const DEFAULT_LON = import.meta.env.VITE_DEFAULT_LON;
-export const DEFAULT_LAT = import.meta.env.VITE_DEFAULT_LAT;
-export const DEFAULT_ZOOM = import.meta.env.VITE_DEFAULT_ZOOM;
+export const DEFAULT_LON =
+  document.querySelector('meta[name="default.lon"]')?.getAttribute('content') || 17;
+
+export const DEFAULT_LAT =
+  document.querySelector('meta[name="default.lat"]')?.getAttribute('content') || 41.5;
+
+export const DEFAULT_ZOOM = 
+  document.querySelector('meta[name="default.zoom"]')?.getAttribute('content') || 6;
 
 export const CLICK_THRESHOLD = 8;
