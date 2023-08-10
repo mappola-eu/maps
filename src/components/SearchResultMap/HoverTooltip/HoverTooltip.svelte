@@ -1,7 +1,7 @@
 <script>
-  export let clientX;
+  export let offsetX;
 
-  export let clientY;
+  export let offsetY;
 
   export let results;
 
@@ -27,7 +27,7 @@
 
 <div 
   class="mappola-hover-tooltip" 
-  style={`top: ${clientY + OFFSET_Y}px; left: ${clientX + OFFSET_X}px;`}>
+  style={`top: ${offsetY + OFFSET_Y}px; left: ${offsetX + OFFSET_X}px;`}>
   <span class="placename">{mostFrequentPlace}</span>
   <span class="count">{results.length} Result{#if results.length > 1}s{/if}</span>
 </div>

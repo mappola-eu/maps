@@ -10,4 +10,7 @@ export const DEFAULT_LAT =
 export const DEFAULT_ZOOM = 
   document.querySelector('meta[name="default.zoom"]')?.getAttribute('content') || 6;
 
+export const MAX_ZOOM =
+  document.querySelector('meta[name="max.zoom"]')?.getAttribute('content') || 12;
+
 export const CLICK_THRESHOLD = 8;

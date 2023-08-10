@@ -13,6 +13,7 @@
     DEFAULT_LAT,
     DEFAULT_LON,
     DEFAULT_ZOOM, 
+    MAX_ZOOM
   } from '../../../config';
 
   import 'maplibre-gl/dist/maplibre-gl.css';
@@ -56,7 +57,7 @@
   }
 
   const onMouseMove = evt => {
-    const { clientX, clientY } = evt.originalEvent;
+    const { offsetX, offsetY } = evt.originalEvent;
 
     const features = map.queryRenderedFeatures(evt.point, {
       layers: [ 'results' ]
@@ -64,7 +65,7 @@
 
     if (features.length > 0) {
       getResultsAt(features[0]).then(results => hovered = {
-        clientX, clientY, results
+        offsetX, offsetY, results
       });      
     } else {
       hovered = null;
@@ -136,7 +137,10 @@
       center: [ DEFAULT_LON, DEFAULT_LAT ],
       zoom: DEFAULT_ZOOM,
       bounds: getBounds(results), // Bounds override center and zoom if defined
-      fitBoundsOptions: { padding: 50 }
+      fitBoundsOptions: { 
+        maxZoom: MAX_ZOOM,
+        padding: 50 
+      }
     });
 
     map.addControl(new NavigationControl(), 'top-right');
