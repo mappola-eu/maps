@@ -9,17 +9,11 @@
     <meta name="map.style" content="https://api.maptiler.com/maps/outdoor/style.json?key=2Ey0xKbFXj7eys0FUBdR" />
     <script type="module" src="../src/index.js"></script>
     <style>
-      html, body {
+      html, body, #root {
         height: 100%;
         margin: 0;
         padding: 0;
         width: 100%;
-      }
-
-      #root {
-        margin: 300px 30px 30px 80px;
-        width: 800px;
-        height: 800px;
       }
     </style>
   </head>
@@ -33,22 +27,7 @@
       import { SearchResultMap } from '../src/index.js';
 
       window.onload = async function() {
-        // const results = await fetch('sample-20230622.json').then(res => res.json());
-        const results = [
-          {
-            "coords": [
-              43.3167,
-              24.0667
-            ],
-            "id": 2,
-            "item_url": "https://mappola.eu.pythonanywhere.com/r/Inscriptions/show/2",
-            "long_id": "MPL00002",
-            "place": "Chomakovtsi",
-            "text": "D(is) M(anibus). {H}ave viator. Si stu-diosus es s\u2026",
-            "thumbnail_url": "https://placekitten.com/g/200/201",
-            "title": "Funerary stele of the praetorian soldier Aurelius Longinus"
-          }
-        ];
+        const results = await fetch('sample-20230622.json').then(res => res.json());
         
         var m = new SearchResultMap({
           parent: document.getElementById('root'), 
