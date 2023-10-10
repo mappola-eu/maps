@@ -1,8 +1,11 @@
 <script>
+  import { onMount } from 'svelte';
   import { fly } from 'svelte/transition';
   import { cubicOut } from 'svelte/easing';
   import Icon from 'svelte-icons-pack/Icon.svelte';
   import BsBodyText from 'svelte-icons-pack/bs/BsBodyText';
+
+  let element;
 
   export let delay = 0;
 
@@ -14,12 +17,22 @@
    * - Mappola ID (for the link to the DB)
    */
   export let item;
+
+  export let isSelected;
+
+  onMount(() => {
+    if (isSelected) {
+      element.scrollIntoView({ block: 'center' });
+    }
+  });
 </script>
 
 <div 
+  bind:this={element}
   class="mappola-popup-card" 
+  class:selected={isSelected}
   in:fly="{{ y: 50, duration: 120, easing: cubicOut, delay }}"
-  out:fly="{{ y: 50, duration: 120, easing: cubicOut, delay: delay ? 120 - delay : 0 }}">
+  out:fly|local="{{ y: 50, duration: 120, easing: cubicOut, delay: delay ? 120 - delay : 0 }}">
 
   <aside class="thumbnail">
     {#if item.thumbnail_url}
@@ -36,6 +49,7 @@
   </section>
 </div>
 
+
 <style>
   .mappola-popup-card {
     background-color: #fff;
@@ -50,6 +64,11 @@
     font-size: 13px;
     color: #472a2d;
     transition: all 0.01s;
+  }
+
+  .mappola-popup-card.selected {
+    outline: 4px solid #472a2d;
+    outline-offset: 2px;
   }
 
   .mappola-popup-card aside {

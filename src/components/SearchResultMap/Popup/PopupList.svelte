@@ -4,6 +4,8 @@
 
   export let items;
 
+  export let selected;
+
   let container;
 
   // Size when entering/leaving
@@ -113,10 +115,11 @@
       class="endless-list-item" 
       data-idx={idx}
       on:pointerdown={onClickCard}>
-
+      
       <PopupCard
         item={item}
-        delay={idx < topIdx ? 0 : 120 - 50 * (idx - topIdx)} />
+        delay={idx < topIdx ? 0 : 120 - 50 * (idx - topIdx)}
+        isSelected={item.long_id === selected} />
     </div>
   {/each}
 
