@@ -141,6 +141,7 @@
     padding: 110px 10px;
     margin-bottom: -30px;
     pointer-events: auto;
+    scroll-padding: 180px 0 0 0;
 
     scrollbar-width: none;  /* Firefox */
     -ms-overflow-style: none;  /* Internet Explorer 10+ */

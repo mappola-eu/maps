@@ -22,7 +22,7 @@
 
   onMount(() => {
     if (isSelected) {
-      element.scrollIntoView({ block: 'center' });
+      element.scrollIntoView({ block: 'start' });
     }
   });
 </script>
