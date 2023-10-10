@@ -95,6 +95,10 @@
   const onMouseMove = evt => {
     const { offsetX, offsetY } = evt.originalEvent;
 
+    const isReady = map.getSource('results-source')
+    if (!isReady)
+      return;
+
     const features = map.queryRenderedFeatures(evt.point, {
       layers: [ 'results' ]
     });
