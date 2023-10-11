@@ -35,7 +35,7 @@ export class SearchResultMap {
 
   setSelected = id => 
     this.map.$set({ selected: id });
-
+    
 }
 
 export class ProfileMap {

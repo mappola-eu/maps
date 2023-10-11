@@ -92,7 +92,7 @@
           <div class="no-scroll">
             <PopupCard 
               item={item}
-              isSelected={item.long_id === selected}
+              isSelected={item.long_id === selected  && items.length > 1}
               delay={items.length === 1 ? 0 : 150 - 50 * idx} />
           </div>
         {/each}
