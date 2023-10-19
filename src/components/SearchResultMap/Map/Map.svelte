@@ -20,13 +20,49 @@
 
   export let results;
 
+  export let selected = undefined;
+
   let container; // Map container DIV
 
   let map; // MapLibre map instance
 
+  let ready = false; // Data ready?
+
   let selection = null;
 
   let hovered = null;
+
+  $: if (selected) {
+    const isReady = map.getSource('results-source') && map.isSourceLoaded('results-source');
+
+    if (isReady)
+      showSelection();
+    else
+      map.once('idle', showSelection);
+  }
+
+  const showSelection = () => {
+    // All features currently on the map
+    const clusters = map.queryRenderedFeatures(undefined, {
+      layers: [ 'results' ]
+    });
+
+    let selectedCluster; 
+
+    clusters.reduce((promise, cluster) => {
+      if (selectedCluster)
+        return promise;
+       
+      return promise.then(() => getResultsAt(cluster).then(results => {
+        const item = results.find(r => r.long_id === selected);
+        if (item) 
+          selectedCluster = cluster;
+      }));
+    }, Promise.resolve()).then(() => {
+      if (selectedCluster)
+        selectResultsAt(selectedCluster);
+    });
+  }
 
   const getResultsAt = f => new Promise(resolve => {
     const clusterId = f.properties.cluster_id;
@@ -59,6 +95,10 @@
   const onMouseMove = evt => {
     const { offsetX, offsetY } = evt.originalEvent;
 
+    const isReady = map.getSource('results-source')
+    if (!isReady)
+      return;
+
     const features = map.queryRenderedFeatures(evt.point, {
       layers: [ 'results' ]
     });
@@ -73,6 +113,8 @@
   }
 
   const onMapClicked = evt => {
+    selected = undefined;
+    
     const bbox = [
       [evt.point.x - CLICK_THRESHOLD, evt.point.y - CLICK_THRESHOLD],
       [evt.point.x + CLICK_THRESHOLD, evt.point.y + CLICK_THRESHOLD]
@@ -160,12 +202,13 @@
 
 <div class="map" bind:this={container}>
   {#if selection}
-    {#key JSON.stringify(selection)}
-    <Popup 
-      selected={selection.feature} 
-      results={selection.results}
-      map={map}
-      on:close={onClosePopup} />
+    {#key selection}
+      <Popup 
+        map={map}
+        feature={selection.feature} 
+        items={selection.results}
+        selected={selected}
+        on:close={onClosePopup} />
     {/key}
   {/if}
 

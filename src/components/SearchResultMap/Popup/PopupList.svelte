@@ -4,6 +4,8 @@
 
   export let items;
 
+  export let selected;
+
   let container;
 
   // Size when entering/leaving
@@ -20,6 +22,8 @@
   // Index of the top-most visible element, so we can time the animation
   let topIdx = 0;
 
+  const isFirefox = /firefox/i.test(navigator.userAgent);
+
   export const scrollBy = step => {
     const container = document.querySelector('.endless-list-container');
     container.scrollTo({ top: container.scrollTop + SCROLL_STEP * step, behavior: 'smooth' });
@@ -27,19 +31,23 @@
 
   // Intersection observer callback
   const callback = entries => {
-
     entries.forEach(entry => {
       const { style } = entry.target;
-      const ratio = entry.intersectionRatio;
 
       if (entry.isIntersecting) {
         // Is this element exiting (top of container) or entering (bottom)
-        const isExiting = entry.boundingClientRect.y < entry.rootBounds.y;
+        const isExiting = entry.boundingClientRect.top <= entry.rootBounds.top;
+        const d =
+          isExiting ? 
+            entry.rootBounds.top - entry.boundingClientRect.top :
+            entry.boundingClientRect.bottom - entry.rootBounds.bottom;
+
+        const ratio = Math.min(1, 1 - (d / entry.boundingClientRect.height));
 
         if (isExiting && ratio < 0.9)
           topIdx = parseInt(entry.target.dataset.idx);
 
-        style.opacity = Math.sqrt(ratio);
+        style.opacity = ratio;
 
         // Scale factor as a function of intersection ratio
         const scale = ratio * (1 - MIN_SCALE) + MIN_SCALE;
@@ -90,7 +98,7 @@
   onMount(() => {
     const options = {
       root: container,
-      rootMargin: '0px',
+      rootMargin: isFirefox ? '-110px' : '0px',
       threshold: Array.from({ length: 51 }, (v, i) => i * 0.02)
     }
 
@@ -98,8 +106,9 @@
 
     container.childNodes.forEach(el => observer.observe(el));
 
-    return () =>
+    return () => {
       observer.disconnect();
+    }
   });
 </script>
 
@@ -113,10 +122,11 @@
       class="endless-list-item" 
       data-idx={idx}
       on:pointerdown={onClickCard}>
-
+      
       <PopupCard
         item={item}
-        delay={idx < topIdx ? 0 : 120 - 50 * (idx - topIdx)} />
+        delay={idx < topIdx ? 0 : 120 - 50 * (idx - topIdx)}
+        isSelected={item.long_id === selected} />
     </div>
   {/each}
 
@@ -131,6 +141,7 @@
     padding: 110px 10px;
     margin-bottom: -30px;
     pointer-events: auto;
+    scroll-padding: 180px 0 0 0;
 
     scrollbar-width: none;  /* Firefox */
     -ms-overflow-style: none;  /* Internet Explorer 10+ */

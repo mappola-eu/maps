@@ -12,9 +12,11 @@
 
   export let map;
 
-  export let selected;
+  export let feature;
 
-  export let results;
+  export let items;
+
+  export let selected;
 
   let el;
 
@@ -35,15 +37,15 @@
   const dispatch = createEventDispatcher();
 
   $: {
-    updatePosition(selected);
+    updatePosition(feature);
   
     if (el)
       moveIntoView(map, el.getBoundingClientRect());
   }
 
-  const updatePosition = selected => {
+  const updatePosition = feature => {
     // Selected marker lon/lat
-    const { coordinates } = selected.geometry;
+    const { coordinates } = feature.geometry;
 
     // Marker X/Y screen position
     const xy = map.project(coordinates);
@@ -66,35 +68,38 @@
   }
 
   onMount(() => {
-    const onMove = () =>  updatePosition(selected);
+    const onMove = () =>  updatePosition(feature);
 
     map.on('move', onMove);
 
     moveIntoView(map, el.getBoundingClientRect());
 
-    return () => map.off('move', onMove);
+    return () => { 
+      map.off('move', onMove); 
+    }
   });
 </script>
 
-{#key selected.properties.results}
+{#key feature.properties.results}
   <div 
     bind:this={el}
     class="mappola-popup-container"
     style={`bottom: ${bottom + 20}px; left: ${left - 160}px;`}>
 
-    {#if (results.length < 4)}
+    {#if (items.length < 4)}
       <div class="wrapper">
-        {#each results as result, idx}
+        {#each items as item, idx}
           <div class="no-scroll">
             <PopupCard 
-              item={result}
-              delay={results.length === 1 ? 0 : 150 - 50 * idx} />
+              item={item}
+              isSelected={item.long_id === selected  && items.length > 1}
+              delay={items.length === 1 ? 0 : 150 - 50 * idx} />
           </div>
         {/each}
 
         <div 
           class="mappola-popup-controls single"
-          transition:fly={{ y: 50, duration: 120, delay: (results.length - 1) * 50, easing: cubicOut }}>
+          transition:fly={{ y: 50, duration: 120, delay: (items.length - 1) * 50, easing: cubicOut }}>
 
           <button on:click={() => dispatch('close')}>
             <Icon src={CgClose} />
@@ -104,7 +109,8 @@
     {:else}
       <div class="wrapper">
         <PopupList 
-          items={results} 
+          items={items} 
+          selected={selected}
           bind:scrollBy={scrollBy}
           on:close
           on:scroll={onListScrolled}>
@@ -120,7 +126,7 @@
           </button>
 
           <span class="scroll-position">
-            {Math.round(results.length * (scrollItem - 1) / 100) }/{results.length}
+            {Math.round(items.length * (scrollItem - 1) / 100) }/{items.length}
           </span>
 
           <button 

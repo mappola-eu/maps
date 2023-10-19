@@ -33,6 +33,9 @@ export class SearchResultMap {
   setResults = results =>
     this.map.$set({ results: filterResults(results) });
 
+  setSelected = id => 
+    this.map.$set({ selected: id });
+    
 }
 
 export class ProfileMap {
