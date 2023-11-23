@@ -26,8 +26,6 @@
 
   let map; // MapLibre map instance
 
-  let ready = false; // Data ready?
-
   let selection = null;
 
   let hovered = null;
@@ -113,8 +111,6 @@
   }
 
   const onMapClicked = evt => {
-    selected = undefined;
-    
     const bbox = [
       [evt.point.x - CLICK_THRESHOLD, evt.point.y - CLICK_THRESHOLD],
       [evt.point.x + CLICK_THRESHOLD, evt.point.y + CLICK_THRESHOLD]
