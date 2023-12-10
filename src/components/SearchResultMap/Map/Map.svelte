@@ -110,6 +110,35 @@
     }
   }
 
+  const onMapZoomed = () => {
+    if (selection && selection.feature.properties.cluster) {
+      const clusters = map.queryRenderedFeatures(undefined, {
+        layers: [ 'results' ]
+      });
+
+      const selectedCluster = clusters.find(c => 
+        c.properties.cluster_id == selection.feature.properties.cluster_id);
+      
+      if (!selectedCluster) {
+        // Need to re-assign
+        const stickyFeatureId = selected || selection.results[0].long_id;
+        
+        let nextCluster;
+
+        clusters.reduce((promise, cluster) => {       
+          return promise.then(() => getResultsAt(cluster).then(results => {
+            const item = results.find(r => r.long_id === stickyFeatureId);
+            if (item) 
+              nextCluster = cluster;
+            }));
+          }, Promise.resolve()).then(() => {
+            if (nextCluster)
+              selectResultsAt(nextCluster);
+          });
+      }
+    }
+  }
+
   const onMapClicked = evt => {
     const bbox = [
       [evt.point.x - CLICK_THRESHOLD, evt.point.y - CLICK_THRESHOLD],
@@ -187,6 +216,8 @@
     map.addControl(new LayerSwitcherControl({ onChange: addData }), 'top-right');
     
     map.on('mousemove', onMouseMove);
+
+    map.on('zoomend', onMapZoomed);
 
     map.on('click', onMapClicked);
     
