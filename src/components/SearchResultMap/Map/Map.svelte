@@ -111,17 +111,24 @@
   }
 
   const onMapZoomed = () => {
-    if (selection && selection.feature.properties.cluster) {
+    if (selection) {
       const clusters = map.queryRenderedFeatures(undefined, {
         layers: [ 'results' ]
       });
 
       const selectedCluster = clusters.find(c => 
-        c.properties.cluster_id == selection.feature.properties.cluster_id);
+        c.properties.cluster_id 
+          ? c.properties.cluster_id === selection.feature.properties.cluster_id
+          : c.properties.long_id === selection.feature.properties.long_id);
       
       if (!selectedCluster) {
         // Need to re-assign
-        const stickyFeatureId = selected || selection.results[0].long_id;
+        const stickyFeatureId = 
+          selected // there is a programmatic selection
+            ? selection.results.find(i => i.long_id === selected) 
+              ? selected // the current popup includes the programmatic selection!
+              : selection.results[0].long_id 
+            : selection.results[0].long_id ;
         
         let nextCluster;
 
