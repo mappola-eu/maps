@@ -110,6 +110,42 @@
     }
   }
 
+  const onMapZoomed = () => {
+    if (selection) {
+      const clusters = map.queryRenderedFeatures(undefined, {
+        layers: [ 'results' ]
+      });
+
+      const selectedCluster = clusters.find(c => 
+        c.properties.cluster_id 
+          ? c.properties.cluster_id === selection.feature.properties.cluster_id
+          : c.properties.long_id === selection.feature.properties.long_id);
+      
+      if (!selectedCluster) {
+        // Need to re-assign
+        const stickyFeatureId = 
+          selected // there is a programmatic selection
+            ? selection.results.find(i => i.long_id === selected) 
+              ? selected // the current popup includes the programmatic selection!
+              : selection.results[0].long_id 
+            : selection.results[0].long_id ;
+        
+        let nextCluster;
+
+        clusters.reduce((promise, cluster) => {       
+          return promise.then(() => getResultsAt(cluster).then(results => {
+            const item = results.find(r => r.long_id === stickyFeatureId);
+            if (item) 
+              nextCluster = cluster;
+            }));
+          }, Promise.resolve()).then(() => {
+            if (nextCluster)
+              selectResultsAt(nextCluster);
+          });
+      }
+    }
+  }
+
   const onMapClicked = evt => {
     const bbox = [
       [evt.point.x - CLICK_THRESHOLD, evt.point.y - CLICK_THRESHOLD],
@@ -187,6 +223,8 @@
     map.addControl(new LayerSwitcherControl({ onChange: addData }), 'top-right');
     
     map.on('mousemove', onMouseMove);
+
+    map.on('zoomend', onMapZoomed);
 
     map.on('click', onMapClicked);
     
